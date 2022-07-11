@@ -37,12 +37,22 @@ export const problemRouter = createRouter()
     }),
     async resolve({ ctx, input }) {
       let submissions: any = [];
-      if (ctx.session) {
-        const userId = input.id ?? ctx.session?.user.id;
+      if (input.id !== null) {
         submissions = await ctx.prisma.submission.findMany({
           where: {
             verdict: "PASSED",
-            userId: userId,
+            userId: input.id,
+          },
+          distinct: ["problemId"],
+          select: {
+            problemId: true,
+          },
+        });
+      } else if (ctx.session?.user.id) {
+        submissions = await ctx.prisma.submission.findMany({
+          where: {
+            verdict: "PASSED",
+            userId: ctx.session?.user.id,
           },
           distinct: ["problemId"],
           select: {

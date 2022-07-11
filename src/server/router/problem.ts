@@ -66,7 +66,7 @@ export const problemRouter = createRouter()
         submissionsSet.add(submission.problemId);
       });
 
-      const problems = await ctx.prisma.problem.findMany({
+      const problems: any = await ctx.prisma.problem.findMany({
         select: {
           id: true,
           title: true,
@@ -75,7 +75,7 @@ export const problemRouter = createRouter()
         },
       });
 
-      const problemsWithMeta = problems.map((problem) => ({
+      const problemsWithMeta = problems.map((problem: any) => ({
         ...problem,
         isSolved: submissionsSet.has(problem.id),
       }));
@@ -86,6 +86,12 @@ export const problemRouter = createRouter()
   .mutation("validateSolution", {
     input: submitSolutionValidator,
     async resolve({ ctx, input }) {
+      if (!ctx.session?.user.id) {
+        throw new trpc.TRPCError({
+          code: "UNAUTHORIZED",
+        });
+      }
+
       const problem = await ctx.prisma.problem.findUnique({
         where: {
           id: input.problemId,
@@ -101,19 +107,6 @@ export const problemRouter = createRouter()
 
       const verdict = input.solution !== problem.solution ? "FAILED" : "PASSED";
 
-      if (verdict === "FAILED") {
-        throw new trpc.TRPCError({
-          code: "BAD_REQUEST",
-          message: "Incorrect solution!",
-        });
-      }
-
-      if (!ctx.session?.user.id) {
-        throw new trpc.TRPCError({
-          code: "UNAUTHORIZED",
-        });
-      }
-
       await ctx.prisma.submission.create({
         data: {
           verdict,
@@ -121,6 +114,13 @@ export const problemRouter = createRouter()
           userId: ctx.session?.user.id,
         },
       });
+
+      if (verdict === "FAILED") {
+        throw new trpc.TRPCError({
+          code: "BAD_REQUEST",
+          message: "Incorrect solution!",
+        });
+      }
 
       return {
         message: "OK! Passed",

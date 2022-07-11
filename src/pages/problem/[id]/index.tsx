@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -72,77 +73,82 @@ const ProblemPageContent: React.FC<{ id: string }> = ({ id }) => {
   }
 
   return (
-    <div className="px-4 sm:px-0 space-y-6">
-      <div className="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200">
-        <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
-          <div>
-            <h3 className="text-lg font-medium leading-6 text-gray-900">
-              {problem.title}
-            </h3>
-            <p className="mt-1 text-sm text-gray-600">
-              Created on {problem.createdAt.toLocaleDateString()}
-            </p>
-          </div>
-          <div>
-            {session?.user.role === "ADMIN" ? (
-              <>
-                <ButtonLink
-                  variant="secondary"
-                  href={`/problem/${problem.id}/edit`}
-                  className="mr-2"
-                >
-                  Edit
-                </ButtonLink>
-                <Button variant="danger" onClick={handleDelete}>
-                  Delete
-                </Button>
-              </>
-            ) : null}
-          </div>
-        </div>
-        <div className="px-4 py-5 sm:p-6 prose prose-slate max-w-none">
-          {/* eslint-disable-next-line react/no-children-prop */}
-          <Markdown children={problem.statement} />
-        </div>
-      </div>
-      <div className="bg-white overflow-hidden shadow rounded-lg">
-        <div className="px-4 py-5 sm:p-6">
-          <form
-            onSubmit={handleSubmit((data) => {
-              mutate(data);
-            })}
-          >
-            <div className="w-full sm:w-1/4">
-              <label className="label">
-                <span className="label-text font-semibold text-base">
-                  Your solution
-                </span>
-              </label>
-              <input
-                {...register("solution")}
-                type="text"
-                className="mt-1 focus:ring-sky-500 focus:border-sky-500 block w-full shadow-sm sm:text-sm border-slate-300 rounded-md"
-                placeholder="Solution"
-              />
-              {errors.solution && (
-                <p className="text-red-400">{errors.solution.message}</p>
-              )}
-            </div>
-            <input {...register("problemId")} type="hidden" value={id} />
-            <div>
-              <Button
-                className="w-full sm:w-auto text-center mt-2"
-                type="submit"
-                disabled={isLoading}
-                isLoading={isLoading}
-              >
-                Submit
-              </Button>
-            </div>
-          </form>
-        </div>
-      </div>
+    <>
+      <Head>
+        <title>{problem.title} - Project Fermat</title>
+      </Head>
 
+      <div className="px-4 sm:px-0 space-y-6">
+        <div className="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200">
+          <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
+            <div>
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                {problem.title}
+              </h3>
+              <p className="mt-1 text-sm text-gray-600">
+                Created on {problem.createdAt.toLocaleDateString()}
+              </p>
+            </div>
+            <div>
+              {session?.user.role === "ADMIN" ? (
+                <>
+                  <ButtonLink
+                    variant="secondary"
+                    href={`/problem/${problem.id}/edit`}
+                    className="mr-2"
+                  >
+                    Edit
+                  </ButtonLink>
+                  <Button variant="danger" onClick={handleDelete}>
+                    Delete
+                  </Button>
+                </>
+              ) : null}
+            </div>
+          </div>
+          <div className="px-4 py-5 sm:p-6 prose prose-slate max-w-none">
+            {/* eslint-disable-next-line react/no-children-prop */}
+            <Markdown children={problem.statement} />
+          </div>
+        </div>
+        <div className="bg-white overflow-hidden shadow rounded-lg">
+          <div className="px-4 py-5 sm:p-6">
+            <form
+              onSubmit={handleSubmit((data) => {
+                mutate(data);
+              })}
+            >
+              <div className="w-full sm:w-1/4">
+                <label className="label">
+                  <span className="label-text font-semibold text-base">
+                    Your solution
+                  </span>
+                </label>
+                <input
+                  {...register("solution")}
+                  type="text"
+                  className="mt-1 focus:ring-sky-500 focus:border-sky-500 block w-full shadow-sm sm:text-sm border-slate-300 rounded-md"
+                  placeholder="Solution"
+                />
+                {errors.solution && (
+                  <p className="text-red-400">{errors.solution.message}</p>
+                )}
+              </div>
+              <input {...register("problemId")} type="hidden" value={id} />
+              <div>
+                <Button
+                  className="w-full sm:w-auto text-center mt-2"
+                  type="submit"
+                  disabled={isLoading}
+                  isLoading={isLoading}
+                >
+                  Submit
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
       <ConfirmDeleteDialog
         id={id}
         isOpen={isConfirmDeleteDialogOpen}
@@ -150,7 +156,7 @@ const ProblemPageContent: React.FC<{ id: string }> = ({ id }) => {
           setIsConfirmDeleteDialogOpen(false);
         }}
       />
-    </div>
+    </>
   );
 };
 export default function ProblemPage() {

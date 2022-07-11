@@ -49,7 +49,9 @@ export const authOptions: NextAuthOptions = {
 
           console.log("ORGS", userOrgs);
           // Set flag to deny signIn if allowed org is not found in the user organizations
-          if (userOrgs.find((org: any) => org.login === "hariomacademy")) {
+          if (
+            userOrgs.find((org: any) => org.login === process.env.ADMIN_ORG)
+          ) {
             profile.role = "ADMIN";
           } else {
             profile.role = "USER";

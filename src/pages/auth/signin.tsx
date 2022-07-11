@@ -1,17 +1,23 @@
-import { getProviders, signIn } from "next-auth/react";
-import Image from "next/image";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function SignIn() {
+  const { query } = useRouter();
+  const { callbackUrl } = query;
+
   return (
     <>
       <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md space-y-8">
-     
           <div>
             <button
               type="button"
               className="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 mr-2 mb-2"
-              onClick={() => signIn("github")}
+              onClick={() =>
+                signIn("github", {
+                  callbackUrl: callbackUrl as string,
+                })
+              }
             >
               <svg
                 className="w-4 h-4 mr-2 -ml-1"

@@ -5,9 +5,9 @@ import { withTRPC } from "@trpc/next";
 import superjson from "superjson";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
 import { Toaster } from 'react-hot-toast';
-import { NextPageWithAuthAndLayout } from "../utils/types";
-import type { AppRouter } from "../server/router";
-import "../styles/globals.css";
+import { NextPageWithAuthAndLayout } from "~/utils/types";
+import type { AppRouter } from "~/server/router";
+import "~/styles/globals.css";
 import "katex/dist/katex.min.css";
 
 type AppPropsWithAuthAndLayout = AppProps & {

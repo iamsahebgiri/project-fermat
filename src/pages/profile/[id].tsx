@@ -68,7 +68,7 @@ const ProfilePageContent: React.FC<{ id: string }> = ({ id }) => {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="h-24 w-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-              src={user?.image ?? "" }
+              src={user?.image ?? ""}
               alt={user?.name ?? "Some Image"}
             />
           </div>
@@ -78,7 +78,16 @@ const ProfilePageContent: React.FC<{ id: string }> = ({ id }) => {
             <h1 className="text-2xl text-center font-bold text-gray-900 truncate">
               {user.name}
             </h1>
-            <div className="mt-2 text-center text-slate-400">{user.email}</div>
+            <div className="mt-2 text-center text-slate-400">{user.bio}</div>
+            <div className="mt-2 text-center text-sky-600">
+              <a
+                href={user.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {user.githubUrl}
+              </a>
+            </div>
           </div>
           <div className="mt-6 pt-6">
             <ProblemsSolved id={id} />

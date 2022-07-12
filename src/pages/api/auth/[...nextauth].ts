@@ -1,10 +1,9 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
-import CredentialsProvider from "next-auth/providers/credentials";
 
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "../../../server/db/client";
+import { prisma } from "~/server/db/client";
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -21,7 +20,7 @@ export const authOptions: NextAuthOptions = {
           // Get base profile
           // @ts-ignore
           const profile = await client.userinfo(tokens);
-          console.log(profile);
+          // console.log(profile);
 
           // If user has email hidden, get their primary email from the GitHub API
           if (!profile.email) {
@@ -47,7 +46,6 @@ export const authOptions: NextAuthOptions = {
             })
           ).json();
 
-          console.log("ORGS", userOrgs);
           // Set flag to deny signIn if allowed org is not found in the user organizations
           if (
             userOrgs.find((org: any) => org.login === process.env.ADMIN_ORG)
@@ -60,13 +58,20 @@ export const authOptions: NextAuthOptions = {
           return profile;
         },
       },
+      profile(profile) {
+        return {
+          id: profile.id,
+          name: profile.name || profile.login,
+          email: profile.email,
+          role: profile.role,
+          image: profile.avatar_url,
+          bio: profile.bio,
+          githubUrl: profile.html_url,
+        };
+      },
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
-      user.role = profile.role as Role;
-      return true;
-    },
     async session({ session, user }) {
       return {
         ...session,
@@ -94,6 +99,8 @@ declare module "next-auth" {
       name: string;
       email: string;
       image?: string | null;
+      bio?: string | null;
+      githubUrl: string;
       role: Role;
     };
   }

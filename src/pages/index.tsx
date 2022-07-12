@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { trpc } from "../utils/trpc";
+import { trpc } from "~/utils/trpc";
 import { NextPageWithAuthAndLayout } from "~/utils/types";
 import Layout from "~/components/layout";
 

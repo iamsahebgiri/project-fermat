@@ -8,8 +8,8 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { Button } from "./button";
 import Link from "next/link";
 import Image from "next/image";
-import fermatTextLogo from "../../public/project-fermat-text.svg";
-import fermatLogo from "../../public/project-fermat.svg";
+import siteTextLogo from "../../public/site-logo-text.svg";
+import siteLogo from "../../public/site-logo.svg";
 import { ButtonLink } from "./button-link";
 import { useRouter } from "next/router";
 
@@ -30,8 +30,8 @@ export default function Header() {
                       <div className="flex items-center h-full lg:hidden">
                         <Image
                           className="h-8 w-auto"
-                          src={fermatLogo}
-                          alt="Project Fermat"
+                          src={siteLogo}
+                          alt="Garbaze"
                         />
                       </div>
                     </a>
@@ -41,8 +41,8 @@ export default function Header() {
                       <div className="hidden lg:flex items-center h-full">
                         <Image
                           className="h-8 w-auto"
-                          src={fermatTextLogo}
-                          alt="Project Fermat"
+                          src={siteTextLogo}
+                          alt="Garbaze"
                         />
                       </div>
                     </a>

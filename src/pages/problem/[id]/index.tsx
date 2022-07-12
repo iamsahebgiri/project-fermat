@@ -75,7 +75,7 @@ const ProblemPageContent: React.FC<{ id: string }> = ({ id }) => {
   return (
     <>
       <Head>
-        <title>{problem.title} - Project Fermat</title>
+        <title>{problem.title} - Garbaze</title>
       </Head>
 
       <div className="px-4 sm:px-0 space-y-6">

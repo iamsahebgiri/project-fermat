@@ -89,7 +89,7 @@ export default function Layout({ children }: DefaultLayoutProps) {
           </div>
           <div className="mt-8 md:mt-0 md:order-1">
             <p className="text-center text-base text-gray-400">
-              &copy; {new Date().getFullYear()} Project Fermat. Made with ❤ in Codex.
+              &copy; {new Date().getFullYear()} Garbaze. Made with 💙 at Codex.
             </p>
           </div>
         </div>

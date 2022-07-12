@@ -36,7 +36,7 @@ export const problemRouter = createRouter()
       id: z.string().nullable(),
     }),
     async resolve({ ctx, input }) {
-      let submissions: any = [];
+      let submissions = null;
       if (input.id !== null) {
         submissions = await ctx.prisma.submission.findMany({
           where: {
@@ -62,11 +62,13 @@ export const problemRouter = createRouter()
       }
 
       const submissionsSet = new Set();
-      submissions.forEach((submission: Submission) => {
-        submissionsSet.add(submission.problemId);
-      });
+      if (submissions !== null) {
+        submissions.forEach((submission) => {
+          submissionsSet.add(submission.problemId);
+        });
+      }
 
-      const problems: any = await ctx.prisma.problem.findMany({
+      const problems = await ctx.prisma.problem.findMany({
         select: {
           id: true,
           title: true,
@@ -75,7 +77,7 @@ export const problemRouter = createRouter()
         },
       });
 
-      const problemsWithMeta = problems.map((problem: any) => ({
+      const problemsWithMeta = problems.map((problem) => ({
         ...problem,
         isSolved: submissionsSet.has(problem.id),
       }));

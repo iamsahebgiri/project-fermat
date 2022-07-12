@@ -69,7 +69,6 @@ export default function ProblemForm({
               {...register("solution", { required: true })}
               label="Solution"
               helperText="Solution to the problem above described."
-              autoFocus
               required
             />
           </div>

@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
 import Layout from "~/components/layout";
@@ -55,6 +56,9 @@ const ProfilePageContent: React.FC<{ id: string }> = ({ id }) => {
 
   return (
     <div>
+      <Head>
+        <title>{user.name} - Garbaze</title>
+      </Head>
       <div className={`h-32 w-full lg:h-48 ${getGradient(user?.email)}`}>
         {/* <img
           className="h-32 w-full object-cover lg:h-48"

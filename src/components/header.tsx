@@ -55,11 +55,11 @@ export default function Header() {
                       Problems
                     </a>
                   </Link>
-                  <Link href="/leaderboard">
+                  {/* <Link href="/leaderboard">
                     <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Leaderboard
                     </a>
-                  </Link>
+                  </Link> */}
                   <a
                     href="https://www.codex-iter.in./about-us"
                     className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"

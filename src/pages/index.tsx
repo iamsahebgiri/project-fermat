@@ -8,14 +8,59 @@ const Home: NextPageWithAuthAndLayout = () => {
   const problems = trpc.useQuery(["problem.getAllByUserId", { id: null }]);
 
   if (!problems.data) {
-    return <div>loading...</div>;
+    return (
+      <div
+        role="status"
+        className="p-4 space-y-4 max-w-full rounded-lg border bg-white border-slate-200 divide-y divide-slate-200 shadow animate-pulse dark:divide-slate-700 md:p-6 dark:border-slate-700"
+      >
+        <div className="flex justify-between items-center">
+          <div>
+            <div className="h-2.5 bg-slate-300 rounded-full dark:bg-slate-600 w-24 mb-2.5"></div>
+            <div className="w-32 h-2 bg-slate-200 rounded-full dark:bg-slate-700"></div>
+          </div>
+          <div className="h-2.5 bg-slate-300 rounded-full dark:bg-slate-700 w-12"></div>
+        </div>
+        <div className="flex justify-between items-center pt-4">
+          <div>
+            <div className="h-2.5 bg-slate-300 rounded-full dark:bg-slate-600 w-24 mb-2.5"></div>
+            <div className="w-32 h-2 bg-slate-200 rounded-full dark:bg-slate-700"></div>
+          </div>
+          <div className="h-2.5 bg-slate-300 rounded-full dark:bg-slate-700 w-12"></div>
+        </div>
+        <div className="flex justify-between items-center pt-4">
+          <div>
+            <div className="h-2.5 bg-slate-300 rounded-full dark:bg-slate-600 w-24 mb-2.5"></div>
+            <div className="w-32 h-2 bg-slate-200 rounded-full dark:bg-slate-700"></div>
+          </div>
+          <div className="h-2.5 bg-slate-300 rounded-full dark:bg-slate-700 w-12"></div>
+        </div>
+        <div className="flex justify-between items-center pt-4">
+          <div>
+            <div className="h-2.5 bg-slate-300 rounded-full dark:bg-slate-600 w-24 mb-2.5"></div>
+            <div className="w-32 h-2 bg-slate-200 rounded-full dark:bg-slate-700"></div>
+          </div>
+          <div className="h-2.5 bg-slate-300 rounded-full dark:bg-slate-700 w-12"></div>
+        </div>
+        <div className="flex justify-between items-center pt-4">
+          <div>
+            <div className="h-2.5 bg-slate-300 rounded-full dark:bg-slate-600 w-24 mb-2.5"></div>
+            <div className="w-32 h-2 bg-slate-200 rounded-full dark:bg-slate-700"></div>
+          </div>
+          <div className="h-2.5 bg-slate-300 rounded-full dark:bg-slate-700 w-12"></div>
+        </div>
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
   }
 
   return (
     <>
       <Head>
         <title>Garbaze</title>
-        <meta name="description" content="Coding challenges for entry into codex coding club" />
+        <meta
+          name="description"
+          content="Coding challenges for entry into codex coding club"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col">

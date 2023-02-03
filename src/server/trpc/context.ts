@@ -1,9 +1,10 @@
-import { type inferAsyncReturnType } from '@trpc/server';
-import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
-import { type Session } from 'next-auth';
+import { type inferAsyncReturnType } from "@trpc/server";
+import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { type Session } from "next-auth";
 
-import { getServerAuthSession } from '~/server/common/get-server-auth-session';
-import { prisma } from '~/lib/prisma';
+import { getServerSession } from "next-auth";
+import { prisma } from "~/lib/prisma";
+import { authOptions } from "~/lib/auth";
 
 type CreateContextOptions = {
   session: Session | null;
@@ -27,8 +28,8 @@ export const createContextInner = async (opts: CreateContextOptions) => {
 export const createContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
 
-  // Get the session from the server using the unstable_getServerSession wrapper function
-  const session = await getServerAuthSession({ req, res });
+  // Get the session from the server
+  const session = await getServerSession(req, res, authOptions);
 
   return await createContextInner({
     session,

@@ -1,11 +1,17 @@
 generator client {
     provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
     provider = "postgresql"
     // url      = "file:./db.sqlite"
     url      = env("DATABASE_URL")
+}
+
+enum Role {
+    USER
+    ADMIN
 }
 
 model Problem {
@@ -60,7 +66,7 @@ model User {
     id            String       @id @default(cuid())
     name          String?
     email         String?      @unique
-    role          String       @default("USER")
+    role          Role         @default(USER)
     githubUrl     String
     bio           String?
     emailVerified DateTime?

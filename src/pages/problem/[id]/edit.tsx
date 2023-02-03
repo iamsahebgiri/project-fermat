@@ -8,8 +8,9 @@ import { trpc } from "~/utils/trpc";
 
 const EditProblem: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter();
-  const problemQuery = trpc.useQuery(["problem.getById", { id }]);
-  const editProblemMutation = trpc.useMutation("problem.edit", {
+  // const problemQuery = trpc.useQuery(["problem.getById", { id }]);
+  const problemQuery = trpc.problem.getById.useQuery({ id });
+  const editProblemMutation = trpc.problem.edit.useMutation({
     onError: (error) => {
       alert(`Something went wrong: ${error.message}`);
     },

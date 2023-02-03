@@ -5,7 +5,8 @@ import { NextPageWithAuthAndLayout } from "~/utils/types";
 import Layout from "~/components/layout";
 
 const Home: NextPageWithAuthAndLayout = () => {
-  const problems = trpc.useQuery(["problem.getAllByUserId", { id: null }]);
+  // const problems = trpc.useQuery(["problem.getAllByUserId", { id: null }]);
+  const problems = trpc.problem.getAllByUserId.useQuery({ id: null });
 
   if (!problems.data) {
     return (

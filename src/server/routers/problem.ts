@@ -1,21 +1,27 @@
-import { createRouter } from "./context";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {
   createProblemValidator,
   editProblemValidator,
 } from "~/shared/problem-validator";
 import { submitSolutionValidator } from "~/shared/solution-validator";
-import * as trpc from "@trpc/server";
-import { Submission } from "@prisma/client";
+import {
+  privateProcedure,
+  protectedProcedure,
+  publicProcedure,
+  router,
+} from "../trpc/trpc";
 
-export const problemRouter = createRouter()
-  .query("getById", {
-    input: z
-      .object({
-        id: z.string(),
-      })
-      .nullish(),
-    async resolve({ ctx, input }) {
+export const problemRouter = router({
+  getById: publicProcedure
+    .input(
+      z
+        .object({
+          id: z.string(),
+        })
+        .nullish()
+    )
+    .query(async ({ ctx, input }) => {
       const problem = await ctx.prisma.problem.findUnique({
         where: {
           id: input?.id,
@@ -29,13 +35,14 @@ export const problemRouter = createRouter()
         },
       });
       return problem;
-    },
-  })
-  .query("getAllByUserId", {
-    input: z.object({
-      id: z.string().nullable(),
     }),
-    async resolve({ ctx, input }) {
+  getAllByUserId: publicProcedure
+    .input(
+      z.object({
+        id: z.string().nullable(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       let submissions = null;
       if (input.id !== null) {
         submissions = await ctx.prisma.submission.findMany({
@@ -83,17 +90,10 @@ export const problemRouter = createRouter()
       }));
 
       return problemsWithMeta;
-    },
-  })
-  .mutation("validateSolution", {
-    input: submitSolutionValidator,
-    async resolve({ ctx, input }) {
-      if (!ctx.session?.user.id) {
-        throw new trpc.TRPCError({
-          code: "UNAUTHORIZED",
-        });
-      }
-
+    }),
+  validateSolution: protectedProcedure
+    .input(submitSolutionValidator)
+    .mutation(async ({ ctx, input }) => {
       const problem = await ctx.prisma.problem.findUnique({
         where: {
           id: input.problemId,
@@ -101,7 +101,7 @@ export const problemRouter = createRouter()
       });
 
       if (!problem) {
-        throw new trpc.TRPCError({
+        throw new TRPCError({
           code: "NOT_FOUND",
           message: "Problem with the given id not found!",
         });
@@ -118,7 +118,7 @@ export const problemRouter = createRouter()
       });
 
       if (verdict === "FAILED") {
-        throw new trpc.TRPCError({
+        throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Incorrect solution!",
         });
@@ -127,17 +127,10 @@ export const problemRouter = createRouter()
       return {
         message: "OK! Passed",
       };
-    },
-  })
-  .mutation("create", {
-    input: createProblemValidator,
-    async resolve({ input, ctx }) {
-      if (ctx.session?.user.role !== "ADMIN") {
-        throw new trpc.TRPCError({
-          code: "FORBIDDEN",
-        });
-      }
-
+    }),
+  create: privateProcedure
+    .input(createProblemValidator)
+    .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.problem.create({
         data: {
           title: input.title,
@@ -145,17 +138,10 @@ export const problemRouter = createRouter()
           solution: input.solution,
         },
       });
-    },
-  })
-  .mutation("edit", {
-    input: editProblemValidator,
-    async resolve({ ctx, input }) {
-      if (ctx.session?.user.role !== "ADMIN") {
-        throw new trpc.TRPCError({
-          code: "FORBIDDEN",
-        });
-      }
-
+    }),
+  edit: privateProcedure
+    .input(editProblemValidator)
+    .mutation(async ({ ctx, input }) => {
       const { id, title, statement, solution } = input;
 
       return await ctx.prisma.problem.update({
@@ -173,23 +159,18 @@ export const problemRouter = createRouter()
           title: true,
         },
       });
-    },
-  })
-  .mutation("delete", {
-    input: z.object({
-      id: z.string(),
     }),
-    async resolve({ input, ctx }) {
-      if (ctx.session?.user.role !== "ADMIN") {
-        throw new trpc.TRPCError({
-          code: "FORBIDDEN",
-        });
-      }
-
+  delete: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.problem.delete({
         where: {
           id: input.id,
         },
       });
-    },
-  });
+    }),
+});

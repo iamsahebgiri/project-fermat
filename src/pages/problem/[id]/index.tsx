@@ -26,10 +26,8 @@ import { trpc } from "~/utils/trpc";
 const ProblemPageContent: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter();
 
-  const { data: problem, isLoading: isProblemLoading } = trpc.useQuery([
-    "problem.getById",
-    { id },
-  ]);
+  const { data: problem, isLoading: isProblemLoading } =
+    trpc.problem.getById.useQuery({ id });
 
   const {
     register,
@@ -41,8 +39,7 @@ const ProblemPageContent: React.FC<{ id: string }> = ({ id }) => {
   });
   const { data: session } = useSession();
 
-  const { mutate, isLoading, data } = trpc.useMutation(
-    "problem.validateSolution",
+  const { mutate, isLoading, data } = trpc.problem.validateSolution.useMutation(
     {
       onSuccess: () => {
         router.push(`/`);
@@ -170,6 +167,7 @@ const ProblemPageContent: React.FC<{ id: string }> = ({ id }) => {
     </>
   );
 };
+
 export default function ProblemPage() {
   const { query } = useRouter();
   const { id } = query;
@@ -197,12 +195,13 @@ function ConfirmDeleteDialog({
 }) {
   const cancelRef = React.useRef<HTMLButtonElement>(null);
   const router = useRouter();
-  const deletePostMutation = trpc.useMutation("problem.delete", {
+
+  const deletePostMutation = trpc.problem.delete.useMutation({
     onError: (error) => {
       toast.error(`Something went wrong: ${error.message}`);
     },
   });
-
+  
   return (
     <Dialog isOpen={isOpen} onClose={onClose} initialFocus={cancelRef}>
       <DialogContent>

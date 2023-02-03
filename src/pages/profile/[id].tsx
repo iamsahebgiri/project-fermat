@@ -6,10 +6,9 @@ import { getGradient } from "~/utils/gradient";
 import { trpc } from "~/utils/trpc";
 
 const ProblemsSolved: React.FC<{ id: string }> = ({ id }) => {
-  const { data: problems, isLoading } = trpc.useQuery([
-    "problem.getAllByUserId",
-    { id },
-  ]);
+  const { data: problems, isLoading } = trpc.problem.getAllByUserId.useQuery({
+    id,
+  });
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -44,7 +43,7 @@ const ProblemsSolved: React.FC<{ id: string }> = ({ id }) => {
   );
 };
 const ProfilePageContent: React.FC<{ id: string }> = ({ id }) => {
-  const { data: user, isLoading } = trpc.useQuery(["user.getById", { id }]);
+  const { data: user, isLoading } = trpc.user.getById.useQuery({ id });
 
   if (isLoading) {
     return <div>Loading...</div>;

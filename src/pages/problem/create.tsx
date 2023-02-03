@@ -9,7 +9,7 @@ import { trpc } from "~/utils/trpc";
 export default function CreateProblemPage() {
   const { data: session } = useSession();
   const router = useRouter();
-  const addProblemMutation = trpc.useMutation("problem.create", {
+  const addProblemMutation = trpc.problem.create.useMutation({
     onError: (error) => {
       alert(`Something went wrong: ${error.message}`);
     },

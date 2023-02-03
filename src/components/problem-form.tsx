@@ -1,10 +1,10 @@
 import React from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "~/components/button";
 import { useLeaveConfirm } from "~/utils/form";
 import { ButtonLink } from "~/components/button-link";
-import { Textarea } from "~/components/textarea";
 import { TextField } from "~/components/textfield";
+import Editor from "~/components/editor/index";
 
 type FormData = {
   title: string;
@@ -25,7 +25,7 @@ export default function ProblemForm({
   backTo,
   onSubmit,
 }: ProblemFormProps) {
-  const { register, formState, getValues, reset, handleSubmit } =
+  const { register, formState, getValues, control, reset, handleSubmit } =
     useForm<FormData>({
       defaultValues,
     });
@@ -56,12 +56,19 @@ export default function ProblemForm({
           </div>
 
           <div>
-            <Textarea
-              {...register("statement", { required: true })}
-              label="Problem statement"
-              helperText="Markdown supported editor with latex enabled."
-              rows={12}
-              required
+            <Controller
+              control={control}
+              render={({ field }) => (
+                <Editor
+                  content={field.value}
+                  onChange={field.onChange}
+                  label="Problem statement"
+                  helperText="Markdown supported editor with latex enabled."
+                />
+              )}
+              rules={{ required: true }}
+              name="statement"
+              defaultValue=""
             />
           </div>
           <div>

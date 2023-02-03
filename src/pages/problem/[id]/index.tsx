@@ -201,7 +201,7 @@ function ConfirmDeleteDialog({
       toast.error(`Something went wrong: ${error.message}`);
     },
   });
-  
+
   return (
     <Dialog isOpen={isOpen} onClose={onClose} initialFocus={cancelRef}>
       <DialogContent>

@@ -2,11 +2,13 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import React from "react";
+import FormulaComponent from "~/components/editor/formula/formula-extension";
+import FormulaMark from "~/components/editor/formula/formula-mark";
 import MenuBar from "./menu-bar";
 
 const Editor = ({ onChange, content, label, helperText }: any) => {
   const editor = useEditor({
-    extensions: [StarterKit, Underline],
+    extensions: [StarterKit, Underline, FormulaComponent, FormulaMark],
     editorProps: {
       attributes: {
         class: "prose max-w-none p-4 prose-slate dark:prose-dark outline-none",
@@ -28,7 +30,7 @@ const Editor = ({ onChange, content, label, helperText }: any) => {
         )}
         {helperText && <p className="text-sm text-gray-500">{helperText}</p>}
       </div>
-      <div className="shadow-sm  block w-full sm:text-sm border border-gray-300 rounded-md mt-1">
+      <div className="shadow-sm block w-full sm:text-sm border border-gray-300 rounded-md mt-1">
         <div className="p-1 border-b">
           <MenuBar editor={editor} />
         </div>

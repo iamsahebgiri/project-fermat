@@ -17,6 +17,8 @@ import arrowRedo24Regular from "@iconify/icons-fluent/arrow-redo-24-regular";
 import lineHorizontal120Regular from "@iconify/icons-fluent/line-horizontal-1-20-regular";
 import textWrap20Regular from "@iconify/icons-fluent/text-wrap-20-regular";
 import textClearFormatting20Regular from "@iconify/icons-fluent/text-clear-formatting-20-regular";
+import mathFormula20Regular from "@iconify/icons-fluent/math-formula-20-regular";
+import mathFormatProfessional20Regular from '@iconify/icons-fluent/math-format-professional-20-regular';
 import { classNames } from "~/utils/classnames";
 
 const MenuBar = ({ editor }: any) => {
@@ -296,6 +298,39 @@ const MenuBar = ({ editor }: any) => {
           >
             <Icon
               icon={lineHorizontal120Regular}
+              className={classNames("h-5 w-5 text-slate-900")}
+            />
+          </button>
+        </div>
+
+        <div className="flex items-center space-x-1 px-2">
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().addKatex().run()}
+            className={classNames(
+              "h-10 w-10 flex items-center justify-center hover:bg-gray-50 rounded-lg",
+              editor.isActive("formulaComponent") && "border shadow-sm "
+            )}
+            aria-label="Insert block Latex"
+            title="Block latex"
+          >
+            <Icon
+              icon={mathFormula20Regular}
+              className={classNames("h-5 w-5 text-slate-900")}
+            />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().toggleFormulaMark().run()}
+            className={classNames(
+              "h-10 w-10 flex items-center justify-center hover:bg-gray-50 rounded-lg",
+              editor.isActive("formulaMark") && "border shadow-sm "
+            )}
+            aria-label="Insert inline latex"
+            title="Inline latex"
+          >
+            <Icon
+              icon={mathFormatProfessional20Regular}
               className={classNames("h-5 w-5 text-slate-900")}
             />
           </button>

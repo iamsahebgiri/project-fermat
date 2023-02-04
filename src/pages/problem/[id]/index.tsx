@@ -83,7 +83,7 @@ const ProblemPageContent: React.FC<{ id: string }> = ({ id }) => {
   return (
     <>
       <Head>
-        <title>{problem.title} - Garbaze</title>
+        <title>{problem.title} - Fermat</title>
       </Head>
 
       <div className="px-4 sm:px-0 space-y-6">

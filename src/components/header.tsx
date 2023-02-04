@@ -31,7 +31,7 @@ export default function Header() {
                         <Image
                           className="h-8 w-auto"
                           src={siteLogo}
-                          alt="Garbaze"
+                          alt="Fermat"
                         />
                       </div>
                     </a>
@@ -42,7 +42,7 @@ export default function Header() {
                         <Image
                           className="h-8 w-auto"
                           src={siteTextLogo}
-                          alt="Garbaze"
+                          alt="Fermat"
                         />
                       </div>
                     </a>

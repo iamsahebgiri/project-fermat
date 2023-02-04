@@ -97,7 +97,7 @@ export default function Layout({ children }: DefaultLayoutProps) {
           </div>
           <div className="mt-8 md:mt-0 md:order-1">
             <p className="text-center text-base text-gray-400">
-              &copy; {new Date().getFullYear()} Garbaze. Made with 💙 by Saheb Giri.
+              &copy; {new Date().getFullYear()} Fermat. Made with 💙 by Saheb Giri.
             </p>
           </div>
         </div>

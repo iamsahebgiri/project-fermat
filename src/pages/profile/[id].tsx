@@ -56,7 +56,7 @@ const ProfilePageContent: React.FC<{ id: string }> = ({ id }) => {
   return (
     <div>
       <Head>
-        <title>{user.name} - Garbaze</title>
+        <title>{user.name} - Fermat</title>
       </Head>
       <div className={`h-32 w-full lg:h-48 ${getGradient(user?.email)}`}>
         {/* <img

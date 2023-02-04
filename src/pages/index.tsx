@@ -57,7 +57,7 @@ const Home: NextPageWithAuthAndLayout = () => {
   return (
     <>
       <Head>
-        <title>Garbaze</title>
+        <title>Fermat</title>
         <meta
           name="description"
           content="Computational problems intended to be solved with computer programs."

@@ -23,7 +23,7 @@ export default function CreateProblemPage() {
   return (
     <div>
       <Head>
-        <title>Create a problem - Garbaze</title>
+        <title>Create a problem - Fermat</title>
       </Head>
 
       <div className="col-span-8">

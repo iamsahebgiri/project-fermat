@@ -131,6 +131,7 @@ export const problemRouter = router({
   create: privateProcedure
     .input(createProblemValidator)
     .mutation(async ({ ctx, input }) => {
+      
       return await ctx.prisma.problem.create({
         data: {
           title: input.title,
@@ -143,6 +144,7 @@ export const problemRouter = router({
     .input(editProblemValidator)
     .mutation(async ({ ctx, input }) => {
       const { id, title, statement, solution } = input;
+
       return await ctx.prisma.problem.update({
         where: {
           id,

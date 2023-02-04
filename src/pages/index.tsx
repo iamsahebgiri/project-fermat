@@ -60,7 +60,7 @@ const Home: NextPageWithAuthAndLayout = () => {
         <title>Garbaze</title>
         <meta
           name="description"
-          content="Coding challenges for entry into codex coding club"
+          content="Computational problems intended to be solved with computer programs."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>

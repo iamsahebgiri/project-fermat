@@ -74,7 +74,13 @@ const Home: NextPageWithAuthAndLayout = () => {
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
                     >
-                      Description / Title
+                      Title
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+                    >
+                      Difficulty
                     </th>
                     <th
                       scope="col"
@@ -91,6 +97,19 @@ const Home: NextPageWithAuthAndLayout = () => {
                         <Link href={`/problem/${problem.id}`}>
                           <a>{problem.title}</a>
                         </Link>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                        <div
+                          className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"
+                          title={`${problem.difficulty}`}
+                        >
+                          <div
+                            className="bg-sky-600 h-2.5 rounded-full"
+                            style={{
+                              width: `${problem.difficulty}%`,
+                            }}
+                          ></div>
+                        </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
                         {problem.isSolved && (

@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+import { Icon } from "@iconify/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
@@ -5,6 +7,8 @@ import Layout from "~/components/layout";
 import ProfileTabs from "~/components/profile-tabs";
 import { getGradient } from "~/utils/gradient";
 import { trpc } from "~/utils/trpc";
+import globe20Filled from "@iconify/icons-fluent/globe-20-filled";
+import star20Filled from "@iconify/icons-fluent/star-20-filled";
 
 const ProblemsSolvedGraph: React.FC<{ id: string }> = ({ id }) => {
   const { data: problems, isLoading } = trpc.problem.getAllByUserId.useQuery({
@@ -32,7 +36,7 @@ const ProblemsSolvedGraph: React.FC<{ id: string }> = ({ id }) => {
       <div className="text-slate-400">
         {solved} out of {total}
       </div>
-      <div className="flex flex-wrap gap-4 mx-auto mt-4">
+      <div className="flex flex-wrap gap-1 items-center mx-auto mt-4">
         {Array.from({ length: solved }, (_, i) => (
           <div key={i} className="h-6 w-6 rounded bg-green-600"></div>
         ))}
@@ -79,22 +83,59 @@ const ProfilePageContent: React.FC<{ id: string }> = ({ id }) => {
               </div>
             </div>
 
-            <div className="flex flex-col items-center w-full mt-6 divide-y ">
-              <div>
+            <div className="flex flex-col w-full justify-center mt-6 space-y-4 px-4">
+              <div className="pb-4 space-y-1 flex flex-col  items-center">
                 <h1 className="text-2xl text-center font-bold text-gray-900 truncate">
                   {user.name}
                 </h1>
-                <div className="mt-2 text-center text-slate-400">
-                  {user.bio}
+                <div className="text-center text-slate-400">{user.bio}</div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center text-sm text-gray-500 font-bold">
+                  <Icon
+                    icon={star20Filled}
+                    className="flex-shrink-0 mr-1.5 h-5 w-5 text-amber-500"
+                    aria-hidden="true"
+                  />
+                  {user.points}XP
                 </div>
-                <div className="mt-2 text-center text-sky-600">
-                  <a
-                    href={user.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {user.githubUrl}
-                  </a>
+                <div className="flex flex-col sm:space-y-3">
+                  <div className="flex items-center text-sm text-gray-500">
+                    <Icon
+                      icon={globe20Filled}
+                      className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                      aria-hidden="true"
+                    />
+                    <a
+                      href={user.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {user.githubUrl}
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="py-3">
+                <h3 className="text-lg font-semibold">Badges</h3>
+                <div className="grid grid-cols-3 gap-2 justify-center items-center mt-4">
+                  {user.badges.map((data) => (
+                    <img
+                      src={`/badges/${data.badge.url}`}
+                      key={data.badge.id}
+                      className="h-24 w-h-24"
+                      alt={data.badge.name}
+                      title={data.badge.description}
+                    />
+                  ))}
+                  {/* {Array.from({ length: 8 }, (_, i) => (
+                    <img
+                      src={`/badges/level-${i + 1}.svg`}
+                      key={i}
+                      className="h-24 w-h-24"
+                      alt={""}
+                    />
+                  ))} */}
                 </div>
               </div>
             </div>

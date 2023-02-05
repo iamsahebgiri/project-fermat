@@ -79,6 +79,10 @@ const ProblemsSubmissions = ({ userId }: { userId: string }) => {
   }
 
   if (!data) {
+    return <div className="p-4 text-red-600">Error fetching submissions</div>;
+  }
+
+  if (data.length == 0) {
     return (
       <EmptyState
         title="No submissions found"
@@ -86,6 +90,7 @@ const ProblemsSubmissions = ({ userId }: { userId: string }) => {
       />
     );
   }
+
   return (
     <ul>
       {data.map((submission) => (
@@ -126,7 +131,7 @@ const BookmarkProblems = ({ userId }: { userId: string }) => {
   }
 
   if (!data) {
-    return <div className="p-4">Error fetching bookmarks</div>;
+    return <div className="p-4 text-red-600">Error fetching bookmarks</div>;
   }
 
   if (data.length == 0) {

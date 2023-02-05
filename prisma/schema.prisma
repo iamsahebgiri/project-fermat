@@ -17,13 +17,14 @@ enum Role {
 model Problem {
     id String @id @default(cuid())
 
-    title     String
-    statement String
-    solution  String
+    title      String
+    statement  String
+    solution   String
+    difficulty Int
 
     createdAt   DateTime     @default(now())
     submissions Submission[]
-    Bookmark    Bookmark[]
+    bookmark    Bookmark[]
 }
 
 model Submission {
@@ -43,6 +44,24 @@ model Bookmark {
     createdAt    DateTime @default(now())
     problem      Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
     bookmarkedBy User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Badge {
+    id          String         @id @default(cuid())
+    name        String
+    description String
+    url         String
+    users       BadgesOnUser[]
+}
+
+model BadgesOnUser {
+    badegeId  String
+    badge     Badge    @relation(fields: [badegeId], references: [id])
+    userId    String
+    user      User     @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+
+    @@id([badegeId, userId])
 }
 
 // Necessary for Next auth
@@ -73,18 +92,20 @@ model Session {
 }
 
 model User {
-    id            String       @id @default(cuid())
+    id            String         @id @default(cuid())
     name          String?
-    email         String?      @unique
-    role          Role         @default(USER)
+    email         String?        @unique
+    role          Role           @default(USER)
     githubUrl     String
     bio           String?
     emailVerified DateTime?
     image         String?
+    points        Int            @default(0)
     accounts      Account[]
     sessions      Session[]
     submissions   Submission[]
-    Bookmark      Bookmark[]
+    bookmark      Bookmark[]
+    badges        BadgesOnUser[]
 }
 
 model VerificationToken {

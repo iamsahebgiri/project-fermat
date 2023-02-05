@@ -13,6 +13,13 @@ export const userRouter = router({
         where: {
           id: input.id,
         },
+        include: {
+          badges: {
+            include: {
+              badge: true,
+            },
+          },
+        },
       });
     }),
   getAllBookmarks: protectedProcedure
@@ -22,7 +29,7 @@ export const userRouter = router({
       })
     )
     .query(async ({ ctx, input }) => {
-      const bookmarks =  await ctx.prisma.bookmark.findMany({
+      const bookmarks = await ctx.prisma.bookmark.findMany({
         where: {
           userId: input.userId,
         },

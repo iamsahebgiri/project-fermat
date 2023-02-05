@@ -81,6 +81,10 @@ export const problemRouter = router({
           title: true,
           statement: true,
           createdAt: true,
+          difficulty: true,
+        },
+        orderBy: {
+          difficulty: "asc",
         },
       });
 
@@ -124,6 +128,113 @@ export const problemRouter = router({
         });
       }
 
+      // Update points
+      const correctSolutions = await ctx.prisma.submission.findMany({
+        where: {
+          AND: {
+            userId: ctx.session.user.id,
+            verdict: "PASSED",
+          },
+        },
+        include: {
+          problem: true,
+        },
+        distinct: ["problemId"],
+      });
+
+      let points = 0;
+      for (let solution of correctSolutions) {
+        points += solution.problem.difficulty * 2;
+      }
+
+      await ctx.prisma.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          points: points,
+        },
+      });
+
+      // add badge
+      // let badges = "";
+      // if (correctSolutions.length === 1) {
+      //   badges.push("level-1");
+      // } else if (correctSolutions.length === 5) {
+
+      // }
+      let badge = null;
+      switch (correctSolutions.length) {
+        case 1:
+          badge = await ctx.prisma.badge.findFirstOrThrow({
+            where: {
+              name: "Intern",
+            },
+          });
+          break;
+        case 5:
+          badge = await ctx.prisma.badge.findFirstOrThrow({
+            where: {
+              name: "Master",
+            },
+          });
+          break;
+        case 10:
+          badge = await ctx.prisma.badge.findFirstOrThrow({
+            where: {
+              name: "Ninja",
+            },
+          });
+          break;
+        case 20:
+          badge = await ctx.prisma.badge.findFirstOrThrow({
+            where: {
+              name: "Guru",
+            },
+          });
+          break;
+        case 30:
+          badge = await ctx.prisma.badge.findFirstOrThrow({
+            where: {
+              name: "Unstoppable",
+            },
+          });
+          break;
+        case 50:
+          badge = await ctx.prisma.badge.findFirstOrThrow({
+            where: {
+              name: "Unbeatable",
+            },
+          });
+          break;
+        case 100:
+          badge = await ctx.prisma.badge.findFirstOrThrow({
+            where: {
+              name: "Epic",
+            },
+          });
+          break;
+        case 120:
+          badge = await ctx.prisma.badge.findFirstOrThrow({
+            where: {
+              name: "Respect",
+            },
+          });
+          break;
+
+        default:
+          break;
+      }
+
+      if (badge !== null) {
+        await ctx.prisma.badgesOnUser.create({
+          data: {
+            badegeId: badge.id,
+            userId: ctx.session.user.id,
+          },
+        });
+      }
+
       return {
         message: "OK! Passed",
       };
@@ -136,6 +247,7 @@ export const problemRouter = router({
           title: input.title,
           statement: input.statement,
           solution: input.solution,
+          difficulty: 5,
         },
       });
     }),

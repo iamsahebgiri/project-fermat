@@ -20,8 +20,7 @@ export const FormulaComponent = (props: NodeViewProps) => {
       displayMode: true,
       maxSize: 300,
     });
-    console.log(formulaToHTML);
-
+    
     setRendedredFormula(formulaToHTML);
     // return () => props.deleteNode();
   }, [rawFormula]);

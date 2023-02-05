@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import React from "react";
 import Layout from "~/components/layout";
 import ProfileTabs from "~/components/profile-tabs";
-import { classNames } from "~/utils/classnames";
 import { getGradient } from "~/utils/gradient";
 import { trpc } from "~/utils/trpc";
 
@@ -19,8 +18,6 @@ const ProblemsSolvedGraph: React.FC<{ id: string }> = ({ id }) => {
   if (!problems) {
     return <div>No problems found!</div>;
   }
-
-  console.log(problems);
 
   let total = problems.length;
   let solved = 0;
@@ -42,52 +39,6 @@ const ProblemsSolvedGraph: React.FC<{ id: string }> = ({ id }) => {
         {Array.from({ length: total - solved }, (_, i) => (
           <div key={i} className="h-6 w-6 rounded bg-slate-500"></div>
         ))}
-      </div>
-    </div>
-  );
-};
-
-const tabs = [
-  { name: "Submissions", href: "#", current: true },
-  { name: "Bookmarks", href: "#", current: false },
-];
-
-const ProblemsSubmissions = () => {
-  return (
-    <div>
-      <div className="sm:hidden">
-        <label htmlFor="tabs" className="sr-only">
-          Select a tab
-        </label>
-        {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
-        <select
-          id="tabs"
-          name="tabs"
-          className="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
-          defaultValue={tabs.find((tab) => tab.current)?.name}
-        >
-          {tabs.map((tab) => (
-            <option key={tab.name}>{tab.name}</option>
-          ))}
-        </select>
-      </div>
-      <div className="hidden sm:block">
-        <nav className="flex space-x-4" aria-label="Tabs">
-          {tabs.map((tab) => (
-            <button
-              key={tab.name}
-              className={classNames(
-                tab.current
-                  ? "bg-gray-100 text-gray-700"
-                  : "text-gray-500 hover:text-gray-700",
-                "px-3 py-2 font-medium text-sm rounded-md"
-              )}
-              aria-current={tab.current ? "page" : undefined}
-            >
-              {tab.name}
-            </button>
-          ))}
-        </nav>
       </div>
     </div>
   );
@@ -154,7 +105,7 @@ const ProfilePageContent: React.FC<{ id: string }> = ({ id }) => {
             <ProblemsSolvedGraph id={id} />
           </div>
           <div className="bg-white shadow-sm rounded-lg p-4">
-            <ProfileTabs />
+            <ProfileTabs userId={id} />
           </div>
         </div>
       </div>

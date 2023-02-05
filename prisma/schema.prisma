@@ -23,6 +23,7 @@ model Problem {
 
     createdAt   DateTime     @default(now())
     submissions Submission[]
+    Bookmark    Bookmark[]
 }
 
 model Submission {
@@ -33,6 +34,15 @@ model Submission {
     submittedAt DateTime @default(now())
     problem     Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
     solvedBy    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Bookmark {
+    id           String   @id @default(cuid())
+    problemId    String
+    userId       String
+    createdAt    DateTime @default(now())
+    problem      Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+    bookmarkedBy User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // Necessary for Next auth

@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Button } from "~/components/button";
@@ -97,13 +97,14 @@ const ProblemPageContent: React.FC<{ id: string }> = ({ id }) => {
                 Created on {problem.createdAt.toLocaleDateString()}
               </p>
             </div>
-            <div>
+            <div className="space-x-2 flex">
+              <Bookmark problemId={problem.id} />
+
               {session?.user.role === "ADMIN" ? (
                 <>
                   <ButtonLink
                     variant="secondary"
                     href={`/problem/${problem.id}/edit`}
-                    className="mr-2"
                   >
                     Edit
                   </ButtonLink>
@@ -179,11 +180,6 @@ export default function ProblemPage() {
   return <ProblemPageContent id={id} />;
 }
 
-ProblemPage.getLayout = function getLayout(page: React.ReactElement) {
-  return <Layout>{page}</Layout>;
-};
-ProblemPage.auth = true;
-
 function ConfirmDeleteDialog({
   id,
   isOpen,
@@ -234,3 +230,88 @@ function ConfirmDeleteDialog({
     </Dialog>
   );
 }
+
+const Bookmark = ({ problemId }: { problemId: string }) => {
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const { data, isLoading } = trpc.problem.isBookmarked.useQuery(
+    {
+      problemId,
+    },
+    {
+      onSuccess: (data) => {
+        setIsBookmarked(data.isBookmarked);
+      },
+    }
+  );
+
+  // FIX: On succssive click on the button it errors out
+  // Invalid `prisma.bookmark.delete()` invocation:
+  const { mutate: removeBookmark, isLoading: isLoadingRemoveBookmark } =
+    trpc.problem.removeFromBookmark.useMutation({
+      onSuccess: () => {
+        toast.success("Bookmark removed successfully!");
+        setIsBookmarked(false);
+      },
+      onError(error) {
+        toast.error(error.message);
+        setIsBookmarked(true);
+      },
+    });
+
+  const { mutate: addToBookmark, isLoading: isLoadingAddToBookmark } =
+    trpc.problem.addToBookmark.useMutation({
+      onSuccess: () => {
+        toast.success("Bookmark added successfully!");
+        setIsBookmarked(true);
+      },
+      onError(error) {
+        toast.error(error.message);
+        setIsBookmarked(false);
+      },
+    });
+
+  if (isLoading) {
+    return (
+      <div className="animate-pulse">
+        <div className="w-48 h-10 bg-gray-200 rounded-lg dark:bg-gray-700"></div>
+      </div>
+    );
+  }
+  if (!data)
+    return <div className="text-red-600">Error in fetching bookmark</div>;
+
+  if (isBookmarked) {
+    return (
+      <Button
+        variant="secondary"
+        onClick={() => {
+          removeBookmark({
+            bookmarkId: data.id ?? "",
+          });
+        }}
+        isLoading={isLoadingRemoveBookmark}
+      >
+        Remove from bookmark
+      </Button>
+    );
+  } else {
+    return (
+      <Button
+        variant="secondary"
+        onClick={() => {
+          addToBookmark({
+            problemId,
+          });
+        }}
+        isLoading={isLoadingAddToBookmark}
+      >
+        Add to bookmark
+      </Button>
+    );
+  }
+};
+
+ProblemPage.getLayout = function getLayout(page: React.ReactElement) {
+  return <Layout>{page}</Layout>;
+};
+ProblemPage.auth = true;

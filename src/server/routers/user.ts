@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../trpc/trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc/trpc";
 
 export const userRouter = router({
   getById: publicProcedure
@@ -14,5 +14,27 @@ export const userRouter = router({
           id: input.id,
         },
       });
+    }),
+  getAllBookmarks: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const bookmarks =  await ctx.prisma.bookmark.findMany({
+        where: {
+          userId: input.userId,
+        },
+        include: {
+          problem: {
+            select: {
+              title: true,
+              id: true,
+            },
+          },
+        },
+      });
+      return bookmarks;
     }),
 });

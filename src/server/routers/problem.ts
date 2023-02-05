@@ -131,7 +131,6 @@ export const problemRouter = router({
   create: privateProcedure
     .input(createProblemValidator)
     .mutation(async ({ ctx, input }) => {
-      
       return await ctx.prisma.problem.create({
         data: {
           title: input.title,
@@ -171,6 +170,74 @@ export const problemRouter = router({
       return await ctx.prisma.problem.delete({
         where: {
           id: input.id,
+        },
+      });
+    }),
+  isBookmarked: protectedProcedure
+    .input(
+      z.object({
+        problemId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const bookmarks = await ctx.prisma.bookmark.findMany({
+        where: {
+          AND: {
+            problemId: input.problemId,
+            userId,
+          },
+        },
+      });
+
+      if (bookmarks.length > 0) {
+        const bookmark = bookmarks[0];
+        return { isBookmarked: true, ...bookmark };
+      }
+
+      return { isBookmarked: false };
+    }),
+  addToBookmark: protectedProcedure
+    .input(
+      z.object({
+        problemId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const bookmarks = await ctx.prisma.bookmark.findMany({
+        where: {
+          AND: {
+            problemId: input.problemId,
+            userId,
+          },
+        },
+      });
+
+      if (bookmarks.length > 0) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Bookmark already exists!",
+        });
+      }
+
+      return await ctx.prisma.bookmark.create({
+        data: {
+          problemId: input.problemId,
+          userId,
+        },
+      });
+    }),
+  removeFromBookmark: protectedProcedure
+    .input(
+      z.object({
+        bookmarkId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.bookmark.delete({
+        where: {
+          id: input.bookmarkId,
         },
       });
     }),

@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Tab } from "@headlessui/react";
 import { classNames } from "~/utils/classnames";
 import { trpc } from "~/utils/trpc";
-
 import Link from "next/link";
 import dayjs from "~/lib/dayjs";
+import { Button } from "./button";
 
 const EmptyState = ({
   title,
@@ -27,7 +27,7 @@ const LoadingSkeleton = () => {
   return (
     <div
       role="status"
-      className=" space-y-4 divide-y divide-gray-200 rounded animate-pulse dark:divide-gray-700 dark:border-gray-700"
+      className="p-4 space-y-4 divide-y divide-gray-200 rounded animate-pulse dark:divide-gray-700 dark:border-gray-700"
     >
       <div className="flex items-center justify-between">
         <div>
@@ -69,9 +69,9 @@ const LoadingSkeleton = () => {
   );
 };
 
-const ProblemsSubmissions = () => {
+const ProblemsSubmissions = ({ userId }: { userId: string }) => {
   const { data, isLoading } = trpc.submission.getAllByUserId.useQuery({
-    userId: "cldoi2lfz0000iwjgxzq8wch1",
+    userId,
   });
 
   if (isLoading) {
@@ -116,8 +116,58 @@ const ProblemsSubmissions = () => {
     </ul>
   );
 };
+const BookmarkProblems = ({ userId }: { userId: string }) => {
+  const { data, isLoading } = trpc.user.getAllBookmarks.useQuery({
+    userId,
+  });
 
-export default function ProfileTabs() {
+  if (isLoading) {
+    return <LoadingSkeleton />;
+  }
+
+  if (!data) {
+    return <div className="p-4">Error fetching bookmarks</div>;
+  }
+
+  if (data.length == 0) {
+    return (
+      <EmptyState
+        title="No bookmark found"
+        subtitle="Visit a problem to bookmark and come back here."
+      />
+    );
+  }
+
+  return (
+    <ul>
+      {data.map((bookmark) => (
+        <li
+          key={bookmark.id}
+          className="relative rounded-md p-3 hover:bg-gray-100"
+        >
+          <h3 className="text-sm font-medium leading-5">
+            {bookmark.problem.title}
+          </h3>
+
+          <ul className="mt-1 flex space-x-1 text-xs font-normal leading-4 text-gray-500">
+            <li>added {dayjs(bookmark.createdAt).fromNow()} </li>
+          </ul>
+
+          <Link href={`/problem/${bookmark.problem.id}`}>
+            <a
+              className={classNames(
+                "absolute inset-0 rounded-md",
+                "ring-sky-400 focus:z-10 focus:outline-none focus:ring-2"
+              )}
+            />
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+export default function ProfileTabs({ userId }: { userId: string }) {
   const [tabs] = useState([
     {
       id: 1,
@@ -151,13 +201,10 @@ export default function ProfileTabs() {
         </Tab.List>
         <Tab.Panels className="mt-2">
           <Tab.Panel key={1} className={classNames("rounded-xl bg-white")}>
-            <ProblemsSubmissions />
+            <ProblemsSubmissions userId={userId} />
           </Tab.Panel>
           <Tab.Panel key={2} className={classNames("rounded-xl bg-white")}>
-            <EmptyState
-              title="No bookmark found"
-              subtitle="Visit a problem to bookmark and come back here."
-            />
+            <BookmarkProblems userId={userId} />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>

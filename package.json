@@ -32,6 +32,7 @@
     "@trpc/next": "^10.9.1",
     "@trpc/react-query": "^10.9.1",
     "@trpc/server": "^10.9.1",
+    "dayjs": "^1.11.7",
     "envsafe": "^2.0.3",
     "katex": "^0.16.4",
     "next": "^12.3.2",

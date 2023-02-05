@@ -26,13 +26,13 @@ model Problem {
 }
 
 model Submission {
-    id       String  @id @default(cuid())
-    verdict  String
-    problem  Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
-    solvedBy User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    problemId String
-    userId    String
+    id          String   @id @default(cuid())
+    verdict     String
+    problemId   String
+    userId      String
+    submittedAt DateTime @default(now())
+    problem     Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+    solvedBy    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // Necessary for Next auth
@@ -74,6 +74,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     submissions   Submission[]
+    Bookmark      Bookmark[]
 }
 
 model VerificationToken {

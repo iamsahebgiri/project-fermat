@@ -32,23 +32,24 @@ const ProblemPageContent: React.FC<{ id: string }> = ({ id }) => {
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
   } = useForm<SubmitSolutionType>({
     resolver: zodResolver(submitSolutionValidator),
   });
   const { data: session } = useSession();
 
-  const { mutate, isLoading, data } = trpc.problem.validateSolution.useMutation(
-    {
-      onSuccess: () => {
-        router.push(`/`);
-      },
-      onError(error) {
+  const { mutate, isLoading } = trpc.problem.validateSolution.useMutation({
+    onSuccess: () => {
+      router.push(`/`);
+    },
+    onError(error) {
+      if (typeof error.shape === "undefined") {
+        toast.error("You reuqest is rate limited, try after 10 seconds.");
+      } else {
         toast.error(error.message);
-      },
-    }
-  );
+      }
+    },
+  });
 
   const [isConfirmDeleteDialogOpen, setIsConfirmDeleteDialogOpen] =
     React.useState(false);

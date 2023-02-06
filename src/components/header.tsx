@@ -31,7 +31,7 @@ export default function Header() {
                         <Image
                           className="h-8 w-auto"
                           src={siteLogo}
-                          alt="Garbaze"
+                          alt="Fermat"
                         />
                       </div>
                     </a>
@@ -42,7 +42,7 @@ export default function Header() {
                         <Image
                           className="h-8 w-auto"
                           src={siteTextLogo}
-                          alt="Garbaze"
+                          alt="Fermat"
                         />
                       </div>
                     </a>
@@ -55,19 +55,11 @@ export default function Header() {
                       Problems
                     </a>
                   </Link>
-                  {/* <Link href="/leaderboard">
+                  <Link href="/leaderboard">
                     <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Leaderboard
                     </a>
-                  </Link> */}
-                  <a
-                    href="https://www.codex-iter.in./about-us"
-                    className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    About us
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
@@ -170,15 +162,6 @@ export default function Header() {
                 <a className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                   Leaderboard
                 </a>
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="https://www.codex-iter.in/about-us"
-                target="_blank"
-                rel="noreferrer"
-                className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-              >
-                About us
               </Disclosure.Button>
             </div>
             <div className="pt-4 pb-3 border-t border-gray-200">

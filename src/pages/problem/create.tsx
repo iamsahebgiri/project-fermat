@@ -9,7 +9,7 @@ import { trpc } from "~/utils/trpc";
 export default function CreateProblemPage() {
   const { data: session } = useSession();
   const router = useRouter();
-  const addProblemMutation = trpc.useMutation("problem.create", {
+  const addProblemMutation = trpc.problem.create.useMutation({
     onError: (error) => {
       alert(`Something went wrong: ${error.message}`);
     },
@@ -23,7 +23,7 @@ export default function CreateProblemPage() {
   return (
     <div>
       <Head>
-        <title>Create a problem - Garbaze</title>
+        <title>Create a problem - Fermat</title>
       </Head>
 
       <div className="col-span-8">

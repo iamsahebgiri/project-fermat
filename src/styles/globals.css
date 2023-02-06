@@ -1,4 +1,12 @@
 @tailwind base;
+
+.ProseMirror span[data-inline-katex="true"]::after {
+  content: "$";
+}
+.ProseMirror span[data-inline-katex="true"]::before {
+  content: "$";
+}
+
 @tailwind components;
 @tailwind utilities;
 

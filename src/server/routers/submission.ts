@@ -21,6 +21,9 @@ export const submissionRouter = router({
             },
           },
         },
+        orderBy: {
+          submittedAt: "desc",
+        },
       });
     }),
 });

@@ -1,6 +1,15 @@
 import Head from "next/head";
 import Link from "next/link";
 import { trpc } from "~/utils/trpc";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components/ui/table";
 import { NextPageWithAuthAndLayout } from "~/utils/types";
 import Layout from "~/components/layout";
 
@@ -63,7 +72,48 @@ const Home: NextPageWithAuthAndLayout = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Title</TableHead>
+            <TableHead className="w-[100px]">Status</TableHead>
+            <TableHead className="w-[100px]">Difficulty</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {problems.data.map((problem) => (
+            <TableRow key={problem.id}>
+              <TableCell className="font-medium">
+                <Link href={`/problem/${problem.id}`}>
+                  <a>{problem.title}</a>
+                </Link>
+              </TableCell>
+              <TableCell>
+                <div
+                  className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"
+                  title={`${problem.difficulty}`}
+                >
+                  <div
+                    className="bg-sky-600 h-2.5 rounded-full"
+                    style={{
+                      width: `${problem.difficulty}%`,
+                    }}
+                  ></div>
+                </div>
+              </TableCell>
+              <TableCell>
+                {problem.isSolved && (
+                  <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                    <span className="w-2 h-2 mr-1 bg-green-500 rounded-full"></span>
+                    Solved
+                  </span>
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      {/* <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div className="shadow overflow-hidden border-b border-slate-200 sm:rounded-lg">
@@ -126,7 +176,7 @@ const Home: NextPageWithAuthAndLayout = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

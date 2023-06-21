@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
+    provider = "mysql"
     // url      = "file:./db.sqlite"
     url      = env("DATABASE_URL")
 }
@@ -18,7 +18,7 @@ model Problem {
     id String @id @default(cuid())
 
     title      String
-    statement  String
+    statement  String @db.Text
     solution   String
     difficulty Int
 

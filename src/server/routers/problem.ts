@@ -36,6 +36,71 @@ export const problemRouter = router({
       });
       return problem;
     }),
+  getPaginated: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).nullish(),
+        cursor: z.string().nullish(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { cursor } = input;
+      const limit = input.limit ?? 30;
+
+      let submissions = null;
+
+      if (ctx.session?.user.id) {
+        submissions = await ctx.prisma.submission.findMany({
+          where: {
+            verdict: "PASSED",
+            userId: ctx.session?.user.id,
+          },
+          distinct: ["problemId"],
+          select: {
+            problemId: true,
+          },
+        });
+      }
+
+      const submissionsSet = new Set();
+      if (submissions !== null) {
+        submissions.forEach((submission) => {
+          submissionsSet.add(submission.problemId);
+        });
+      }
+
+      const problems = await ctx.prisma.problem.findMany({
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        select: {
+          id: true,
+          title: true,
+          statement: true,
+          createdAt: true,
+          difficulty: true,
+        },
+        orderBy: {
+          id: "asc",
+        },
+      });
+
+      const problemsWithMeta = problems.map((problem) => ({
+        ...problem,
+        isSolved: submissionsSet.has(problem.id),
+      }));
+
+      let nextCursor: typeof cursor | undefined = undefined;
+
+      if (problems.length > limit) {
+        const nextItem = problems.pop();
+        nextCursor = nextItem!.id;
+      }
+
+      return {
+        problems: problemsWithMeta,
+        nextCursor,
+      };
+    }),
   getAllByUserId: publicProcedure
     .input(
       z.object({

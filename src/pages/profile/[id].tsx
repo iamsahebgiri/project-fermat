@@ -6,6 +6,7 @@ import React from "react";
 import Layout from "~/components/layout";
 import ProfileTabs from "~/components/profile-tabs";
 import { getGradient } from "~/utils/gradient";
+import { SITE_NAME } from "~/utils/constants";
 import { trpc } from "~/utils/trpc";
 import globe20Filled from "@iconify/icons-fluent/globe-20-filled";
 import star20Filled from "@iconify/icons-fluent/star-20-filled";
@@ -62,7 +63,9 @@ const ProfilePageContent: React.FC<{ id: string }> = ({ id }) => {
   return (
     <div>
       <Head>
-        <title>{user.name} - Fermat</title>
+        <title>
+          {user.name} - {SITE_NAME}
+        </title>
       </Head>
       <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-4 px-4 lg:p-0 gap-y-2.5">
         <div className="bg-white pb-6 rounded-lg shadow-sm">

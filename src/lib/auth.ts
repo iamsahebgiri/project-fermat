@@ -1,5 +1,4 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import type { Role } from "@prisma/client";
 import type { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import { serverEnv } from "~/env/server";
@@ -96,11 +95,11 @@ declare module "next-auth" {
       image?: string | null;
       bio?: string | null;
       githubUrl: string;
-      role: Role;
+      role: String;
     };
   }
 
   interface User {
-    role: Role;
+    role: String;
   }
 }

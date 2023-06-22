@@ -12,6 +12,7 @@ import siteTextLogo from "../../public/site-logo-text.svg";
 import siteLogo from "../../public/site-logo.svg";
 import { ButtonLink } from "./button-link";
 import { useRouter } from "next/router";
+import { SITE_NAME } from "~/utils/constants";
 
 const navigation = [
   {
@@ -44,9 +45,9 @@ export default function Header() {
                     <a>
                       <div className="flex items-center h-full lg:hidden">
                         <Image
-                          className="h-8 w-auto"
+                          className="h-6 w-auto"
                           src={siteLogo}
-                          alt="Fermat"
+                          alt={SITE_NAME}
                         />
                       </div>
                     </a>
@@ -55,9 +56,9 @@ export default function Header() {
                     <a>
                       <div className="hidden lg:flex items-center h-full">
                         <Image
-                          className="h-8 w-auto"
-                          src={siteTextLogo}
-                          alt="Fermat"
+                          className="h-6 w-auto"
+                          src={siteLogo}
+                          alt={SITE_NAME}
                         />
                       </div>
                     </a>

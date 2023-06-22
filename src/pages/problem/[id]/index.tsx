@@ -21,6 +21,7 @@ import {
   SubmitSolutionType,
   submitSolutionValidator,
 } from "~/shared/solution-validator";
+import { SITE_NAME } from "~/utils/constants";
 import { trpc } from "~/utils/trpc";
 
 const ProblemPageContent: React.FC<{ id: string }> = ({ id }) => {
@@ -84,7 +85,9 @@ const ProblemPageContent: React.FC<{ id: string }> = ({ id }) => {
   return (
     <>
       <Head>
-        <title>{problem.title} - Fermat</title>
+        <title>
+          {problem.title} - {SITE_NAME}
+        </title>
       </Head>
 
       <div className="px-4 sm:px-0 space-y-6">

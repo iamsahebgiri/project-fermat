@@ -5,6 +5,7 @@ import React from "react";
 import Layout from "~/components/layout";
 import ProblemForm from "~/components/problem-form";
 import { trpc } from "~/utils/trpc";
+import { SITE_NAME } from "~/utils/constants";
 
 const EditProblem: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter();
@@ -20,7 +21,7 @@ const EditProblem: React.FC<{ id: string }> = ({ id }) => {
     return (
       <>
         <Head>
-          <title>Edit {problemQuery.data.title} - Fermat</title>
+          <title>Edit {problemQuery.data.title} - {SITE_NAME}</title>
         </Head>
 
         <h1 className="text-2xl font-semibold tracking-tight md:text-3xl px-4 sm:px-0">

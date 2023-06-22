@@ -74,12 +74,14 @@ const navigation = [
 ];
 export default function Layout({ children }: DefaultLayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Header />
-      <main className="max-w-7xl mx-auto px-0 py-8 sm:px-6 lg:px-8">
-        {children}
-      </main>
-      <footer>
+    <>
+      <div className="min-h-screen bg-gray-100">
+        <Header />
+        <main className="max-w-7xl mx-auto px-0 py-8 sm:px-6 lg:px-8">
+          {children}
+        </main>
+      </div>
+      {/* <footer>
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
           <div className="flex justify-center space-x-6 md:order-2">
             {navigation.map((item) => (
@@ -97,11 +99,12 @@ export default function Layout({ children }: DefaultLayoutProps) {
           </div>
           <div className="mt-8 md:mt-0 md:order-1">
             <p className="text-center text-base text-gray-400">
-              &copy; {new Date().getFullYear()} Fermat. Made with 💙 by Saheb Giri.
+              &copy; {new Date().getFullYear()} {SITE_NAME}. Made with 💙 by Saheb
+              Giri.
             </p>
           </div>
         </div>
-      </footer>
-    </div>
+      </footer> */}
+    </>
   );
 }

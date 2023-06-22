@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import Layout from "~/components/layout";
 import ProblemForm from "~/components/problem-form";
+import { SITE_NAME } from "~/utils/constants";
 import { trpc } from "~/utils/trpc";
 
 export default function CreateProblemPage() {
@@ -23,7 +24,7 @@ export default function CreateProblemPage() {
   return (
     <div>
       <Head>
-        <title>Create a problem - Fermat</title>
+        <title>Create a problem - {SITE_NAME}</title>
       </Head>
 
       <div className="col-span-8">

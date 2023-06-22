@@ -2,12 +2,17 @@
 
 - [x] Profile page with problems solved
 - [x] Fix: Tick only those problem solved by logged in users
-- [ ] Add admin dashboard to manage questions
+- [x] Add admin dashboard to manage questions
   - [x] Create
   - [x] Edit
-  - [ ] Delete
-- [ ] Leader board
-- [x] render questions with latex
-- Fix Navbar links
-- Add a seed script
-- Make a logo  
+  - [x] Delete
+- [x] Leader board
+- [ ] Discussion
+- [x] React Tables
+- [ ] Fix footer
+- [ ] Use SVG based heat graph
+- [x] Render questions with latex
+- [x] Infinite loading
+- [x] Fix Navbar links
+- [x] Add a seed script
+- [ ] Change project logo to something more recognizable  

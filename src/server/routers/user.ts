@@ -22,6 +22,20 @@ export const userRouter = router({
         },
       });
     }),
+  getLeaderboard: publicProcedure.query(async ({ ctx, input }) => {
+    const users = await ctx.prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        points: true,
+      },
+      orderBy: {
+        points: "desc",
+      },
+    });
+    return users;
+  }),
   getAllBookmarks: protectedProcedure
     .input(
       z.object({

@@ -6,7 +6,7 @@ type DefaultLayoutProps = { children: React.ReactNode };
 const navigation = [
   {
     name: "Facebook",
-    href: "https://www.facebook.com/codexiter",
+    href: "https://www.facebook.com/iamsahebgiri",
     icon: (props: any) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
@@ -19,7 +19,7 @@ const navigation = [
   },
   {
     name: "Instagram",
-    href: "https://www.instagram.com/codexiter",
+    href: "https://www.instagram.com/iamsahebgiri",
     icon: (props: any) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
@@ -32,7 +32,7 @@ const navigation = [
   },
   {
     name: "LinkedIn",
-    href: "https://www.linkedin.com/company/codex-iter",
+    href: "https://www.linkedin.com/in/iamsahebgiri",
     icon: (props: any) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <rect x="0" y="0" width="24" height="24" fill="none" stroke="none" />
@@ -47,7 +47,7 @@ const navigation = [
   },
   {
     name: "Youtube",
-    href: "https://www.youtube.com/channel/UCu1S3gm2ODknxDlkpPX2RrA",
+    href: "https://www.youtube.com/@iamsahebgiri",
     icon: (props: any) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <rect x="0" y="0" width="24" height="24" fill="none" stroke="none" />
@@ -60,7 +60,7 @@ const navigation = [
   },
   {
     name: "GitHub",
-    href: "https://github.com/codex-iter",
+    href: "https://github.com/iamsahebgiri",
     icon: (props: any) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
@@ -74,12 +74,14 @@ const navigation = [
 ];
 export default function Layout({ children }: DefaultLayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Header />
-      <main className="max-w-7xl mx-auto px-0 py-8 sm:px-6 lg:px-8">
-        {children}
-      </main>
-      <footer>
+    <>
+      <div className="min-h-screen bg-gray-100">
+        <Header />
+        <main className="max-w-7xl mx-auto px-0 py-8 sm:px-6 lg:px-8">
+          {children}
+        </main>
+      </div>
+      {/* <footer>
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
           <div className="flex justify-center space-x-6 md:order-2">
             {navigation.map((item) => (
@@ -97,11 +99,12 @@ export default function Layout({ children }: DefaultLayoutProps) {
           </div>
           <div className="mt-8 md:mt-0 md:order-1">
             <p className="text-center text-base text-gray-400">
-              &copy; {new Date().getFullYear()} Garbaze. Made with 💙 at Codex.
+              &copy; {new Date().getFullYear()} {SITE_NAME}. Made with 💙 by Saheb
+              Giri.
             </p>
           </div>
         </div>
-      </footer>
-    </div>
+      </footer> */}
+    </>
   );
 }

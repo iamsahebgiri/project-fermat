@@ -1,40 +1,67 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
-    provider = "mongodb"
+    provider = "postgresql"
     // url      = "file:./db.sqlite"
     url      = env("DATABASE_URL")
 }
 
 model Problem {
-    id String @id @default(auto()) @map("_id") @db.ObjectId
+    id String @id @default(cuid())
 
-    title     String
-    statement String
-    solution  String
+    title      String
+    statement  String
+    solution   String
+    difficulty Int
 
     createdAt   DateTime     @default(now())
     submissions Submission[]
+    bookmark    Bookmark[]
 }
 
 model Submission {
-    id       String  @id @default(auto()) @map("_id") @db.ObjectId
-    verdict  String
-    problem  Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
-    solvedBy User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id          String   @id @default(cuid())
+    verdict     String
+    problemId   String
+    userId      String
+    submittedAt DateTime @default(now())
+    problem     Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+    solvedBy    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
-    problemId String
+model Bookmark {
+    id           String   @id @default(cuid())
+    problemId    String
+    userId       String
+    createdAt    DateTime @default(now())
+    problem      Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+    bookmarkedBy User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Badge {
+    id          String         @id @default(cuid())
+    name        String
+    description String
+    url         String
+    users       BadgesOnUser[]
+}
+
+model BadgesOnUser {
+    badegeId  String
+    badge     Badge    @relation(fields: [badegeId], references: [id])
     userId    String
+    user      User     @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+
+    @@id([badegeId, userId])
 }
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(auto()) @map("_id") @db.ObjectId
+    id                String  @id @default(cuid())
     userId            String
     type              String
     provider          String
@@ -52,7 +79,7 @@ model Account {
 }
 
 model Session {
-    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    id           String   @id @default(cuid())
     sessionToken String   @unique
     userId       String
     expires      DateTime
@@ -60,21 +87,24 @@ model Session {
 }
 
 model User {
-    id            String       @id @default(auto()) @map("_id") @db.ObjectId
+    id            String         @id @default(cuid())
     name          String?
-    email         String?      @unique
-    role          String       @default("USER")
+    email         String?        @unique
+    role          String         @default("USER")
     githubUrl     String
     bio           String?
     emailVerified DateTime?
     image         String?
+    points        Int            @default(0)
     accounts      Account[]
     sessions      Session[]
     submissions   Submission[]
+    bookmark      Bookmark[]
+    badges        BadgesOnUser[]
 }
 
 model VerificationToken {
-    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    id         String   @id @default(cuid())
     identifier String
     token      String   @unique
     expires    DateTime

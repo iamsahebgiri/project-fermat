@@ -12,6 +12,22 @@ import siteTextLogo from "../../public/site-logo-text.svg";
 import siteLogo from "../../public/site-logo.svg";
 import { ButtonLink } from "./button-link";
 import { useRouter } from "next/router";
+import { SITE_NAME } from "~/utils/constants";
+
+const navigation = [
+  {
+    path: "/",
+    title: "Problems",
+  },
+  {
+    path: "/leaderboard",
+    title: "Leaderboard",
+  },
+  {
+    path: "/discussions",
+    title: "Discussions",
+  },
+];
 
 export default function Header() {
   const { data: session } = useSession();
@@ -29,9 +45,9 @@ export default function Header() {
                     <a>
                       <div className="flex items-center h-full lg:hidden">
                         <Image
-                          className="h-8 w-auto"
+                          className="h-6 w-auto"
                           src={siteLogo}
-                          alt="Garbaze"
+                          alt={SITE_NAME}
                         />
                       </div>
                     </a>
@@ -40,9 +56,9 @@ export default function Header() {
                     <a>
                       <div className="hidden lg:flex items-center h-full">
                         <Image
-                          className="h-8 w-auto"
-                          src={siteTextLogo}
-                          alt="Garbaze"
+                          className="h-6 w-auto"
+                          src={siteLogo}
+                          alt={SITE_NAME}
                         />
                       </div>
                     </a>
@@ -50,24 +66,23 @@ export default function Header() {
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                   {/* Current: "border-sky-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                  <Link href="/">
-                    <a className="border-sky-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                      Problems
-                    </a>
-                  </Link>
-                  {/* <Link href="/leaderboard">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                      Leaderboard
-                    </a>
-                  </Link> */}
-                  <a
-                    href="https://www.codex-iter.in./about-us"
-                    className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    About us
-                  </a>
+                  {navigation.map((nav) => {
+                    const isActive = router.pathname === nav.path;
+                    return (
+                      <Link href={nav.path} key={nav.path}>
+                        <a
+                          className={classNames(
+                            isActive
+                              ? "border-sky-500 text-gray-900"
+                              : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                            "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                          )}
+                        >
+                          {nav.title}
+                        </a>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
@@ -161,25 +176,23 @@ export default function Header() {
           <Disclosure.Panel className="sm:hidden">
             <div className="pt-2 pb-3 space-y-1">
               {/* Current: "bg-sky-50 border-sky-500 text-sky-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-              <Disclosure.Button as={Link} href="/">
-                <a className="bg-sky-50 border-sky-500 text-sky-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                  Problems
-                </a>
-              </Disclosure.Button>
-              <Disclosure.Button as={Link} href="/leaderboard">
-                <a className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                  Leaderboard
-                </a>
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="https://www.codex-iter.in/about-us"
-                target="_blank"
-                rel="noreferrer"
-                className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-              >
-                About us
-              </Disclosure.Button>
+              {navigation.map((nav) => {
+                const isActive = router.pathname === nav.path;
+                return (
+                  <Link href={nav.path} key={nav.path}>
+                    <a
+                      className={classNames(
+                        isActive
+                          ? "bg-sky-50 border-sky-500 text-sky-700 "
+                          : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700",
+                        "block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                      )}
+                    >
+                      {nav.title}
+                    </a>
+                  </Link>
+                );
+              })}
             </div>
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4">
@@ -210,14 +223,11 @@ export default function Header() {
               <div className="mt-3 space-y-1">
                 {session ? (
                   <>
-                    <Disclosure.Button
-                      as={Link}
-                      href={`/profile/${session.user.id}`}
-                    >
+                    <Link href={`/profile/${session.user.id}`}>
                       <a className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
                         Your Profile
                       </a>
-                    </Disclosure.Button>
+                    </Link>
                     <Disclosure.Button
                       onClick={() => signOut()}
                       className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"

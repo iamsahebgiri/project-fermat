@@ -4,12 +4,13 @@ import { useRouter } from "next/router";
 import React from "react";
 import Layout from "~/components/layout";
 import ProblemForm from "~/components/problem-form";
+import { SITE_NAME } from "~/utils/constants";
 import { trpc } from "~/utils/trpc";
 
 export default function CreateProblemPage() {
   const { data: session } = useSession();
   const router = useRouter();
-  const addProblemMutation = trpc.useMutation("problem.create", {
+  const addProblemMutation = trpc.problem.create.useMutation({
     onError: (error) => {
       alert(`Something went wrong: ${error.message}`);
     },
@@ -23,7 +24,7 @@ export default function CreateProblemPage() {
   return (
     <div>
       <Head>
-        <title>Create a problem - Garbaze</title>
+        <title>Create a problem - {SITE_NAME}</title>
       </Head>
 
       <div className="col-span-8">

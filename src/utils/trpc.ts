@@ -1,12 +1,12 @@
-import { httpBatchLink, loggerLink } from '@trpc/client';
-import { createTRPCNext } from '@trpc/next';
-import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
-import superjson from 'superjson';
+import { httpBatchLink, loggerLink } from "@trpc/client";
+import { createTRPCNext } from "@trpc/next";
+import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import superjson from "superjson";
 
-import { type AppRouter } from '~/server/routers/_app';
+import { type AppRouter } from "~/server/routers/_app";
 
 const getBaseUrl = () => {
-  if (typeof window !== 'undefined') return ''; // browser should use relative url
+  if (typeof window !== "undefined") return ""; // browser should use relative url
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
   if (process.env.RENDER_INTERNAL_HOSTNAME)
     return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`; // reference for render.com
@@ -20,8 +20,8 @@ export const trpc = createTRPCNext<AppRouter>({
       links: [
         loggerLink({
           enabled: (opts) =>
-            process.env.NODE_ENV === 'development' ||
-            (opts.direction === 'down' && opts.result instanceof Error),
+            process.env.NODE_ENV === "development" ||
+            (opts.direction === "down" && opts.result instanceof Error),
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
@@ -42,3 +42,9 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  * @example type HelloOutput = RouterOutputs['example']['hello']
  **/
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
+
+export type Comment = RouterOutputs["comment"]["getAll"][number];
+
+export type CommentWithChildren = Comment & {
+  children: Array<CommentWithChildren>;
+};

@@ -248,7 +248,7 @@ const Bookmark = ({ problemId }: { problemId: string }) => {
     }
   );
 
-  // FIX: On succssive click on the button it errors out
+  // FIX: On successive click on the button it errors out
   // Invalid `prisma.bookmark.delete()` invocation:
   const { mutate: removeBookmark, isLoading: isLoadingRemoveBookmark } =
     trpc.problem.removeFromBookmark.useMutation({
@@ -284,35 +284,28 @@ const Bookmark = ({ problemId }: { problemId: string }) => {
   if (!data)
     return <div className="text-red-600">Error in fetching bookmark</div>;
 
-  if (isBookmarked) {
-    return (
-      <Button
-        variant="secondary"
-        onClick={() => {
+  return (
+    <Button
+      variant="secondary"
+      onClick={() => {
+        if (isBookmarked) {
+          console.log("BookmarkId", data.id);
           removeBookmark({
             bookmarkId: data.id ?? "",
           });
-        }}
-        isLoading={isLoadingRemoveBookmark}
-      >
-        Remove from bookmark
-      </Button>
-    );
-  } else {
-    return (
-      <Button
-        variant="secondary"
-        onClick={() => {
+        } else {
           addToBookmark({
             problemId,
           });
-        }}
-        isLoading={isLoadingAddToBookmark}
-      >
-        Add to bookmark
-      </Button>
-    );
-  }
+        }
+      }}
+      isLoading={
+        isBookmarked ? isLoadingRemoveBookmark : isLoadingAddToBookmark
+      }
+    >
+      {isBookmarked ? "Remove from bookmark" : "Add to bookmark"}
+    </Button>
+  );
 };
 
 ProblemPage.getLayout = function getLayout(page: React.ReactElement) {

@@ -50,13 +50,48 @@ model Badge {
 }
 
 model BadgesOnUser {
-    badegeId  String
-    badge     Badge    @relation(fields: [badegeId], references: [id])
+    badgeId   String
+    badge     Badge    @relation(fields: [badgeId], references: [id])
     userId    String
     user      User     @relation(fields: [userId], references: [id])
     createdAt DateTime @default(now())
 
-    @@id([badegeId, userId])
+    @@id([badgeId, userId])
+}
+
+model Discussion {
+    id        String @id @default(cuid())
+    title     String
+    body      String
+    permalink String @unique
+
+    author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    authorId String
+
+    comments Comment[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([permalink])
+}
+
+model Comment {
+    id   String @id @default(cuid())
+    body String
+
+    author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    authorId String
+
+    discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+    discussionId String
+
+    children Comment[] @relation("comment_children")
+    parent   Comment?  @relation("comment_children", fields: [parentId], references: [id])
+    parentId String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // Necessary for Next auth
@@ -101,6 +136,8 @@ model User {
     submissions   Submission[]
     bookmark      Bookmark[]
     badges        BadgesOnUser[]
+    discussions   Discussion[]
+    comments      Comment[]
 }
 
 model VerificationToken {

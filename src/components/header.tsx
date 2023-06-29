@@ -67,7 +67,13 @@ export default function Header() {
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                   {/* Current: "border-sky-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   {navigation.map((nav) => {
-                    const isActive = router.pathname === nav.path;
+                    let isActive = false;
+                    if (nav.path === "/") {
+                      const routes = ["/", "/problem/[id]"];
+                      isActive = routes.includes(router.pathname);
+                    } else {
+                      isActive = router.pathname.startsWith(nav.path);
+                    }
                     return (
                       <Link href={nav.path} key={nav.path}>
                         <a

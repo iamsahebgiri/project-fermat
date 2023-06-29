@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/iamsahebgiri/add-readme">
+  <a href="https://github.com/iamsahebgiri/codefusion">
     <img alt="CodeFusion" height="80" src="https://codefusion.vercel.app/_next/static/media/site-logo.0f0327d8.svg">
   </a>
 </p>

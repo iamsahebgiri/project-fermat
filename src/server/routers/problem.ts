@@ -294,7 +294,7 @@ export const problemRouter = router({
       if (badge !== null) {
         await ctx.prisma.badgesOnUser.create({
           data: {
-            badegeId: badge.id,
+            badgeId: badge.id,
             userId: ctx.session.user.id,
           },
         });

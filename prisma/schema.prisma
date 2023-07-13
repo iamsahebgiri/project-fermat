@@ -64,6 +64,7 @@ model Discussion {
     title     String
     body      String
     permalink String @unique
+    views     BigInt @default(0)
 
     author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId String
@@ -91,8 +92,8 @@ model Comment {
     parentId String?
 
     deletedAt DateTime? @db.Timestamp()
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
 }
 
 // Necessary for Next auth

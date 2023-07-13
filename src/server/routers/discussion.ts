@@ -19,6 +19,8 @@ export const discussionRouter = router({
         body: true,
         permalink: true,
         author: true,
+        views: true,
+        createdAt: true,
       },
     });
   }),
@@ -30,6 +32,15 @@ export const discussionRouter = router({
     )
     .query(async ({ ctx, input }) => {
       const { permalink } = input;
+
+      await ctx.prisma.discussion.update({
+        where: {
+          permalink,
+        },
+        data: {
+          views: { increment: 1 },
+        },
+      });
 
       return await ctx.prisma.discussion.findUnique({
         where: {

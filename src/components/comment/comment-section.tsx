@@ -4,6 +4,8 @@ import { trpc } from "~/utils/trpc";
 import ListComments from "./comments-list";
 import formatComments from "~/utils/comments";
 import { useMemo } from "react";
+import EmptyState from "../empty-state";
+import emptyBox from "../../../public/empty-states/empty-box.png"
 
 function CommentSection() {
   const router = useRouter();
@@ -45,7 +47,11 @@ function CommentSection() {
       {comments.length > 0 ? (
         <ListComments comments={formattedComments} />
       ) : (
-        "No comments"
+        <EmptyState
+          title="No comments yet"
+          subtitle="There been no comments added to this discussion yet."
+          url={emptyBox}
+        />
       )}
     </div>
   );

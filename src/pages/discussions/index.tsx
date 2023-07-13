@@ -1,21 +1,20 @@
+import Head from "next/head";
 import Link from "next/link";
 import React from "react";
+import { Icon } from "@iconify/react";
+import eye20Regular from "@iconify/icons-fluent/eye-20-regular";
 import { Button } from "~/components/button";
 import { ButtonLink } from "~/components/button-link";
 import Layout from "~/components/layout";
+import { SITE_NAME } from "~/utils/constants";
 import { trpc } from "~/utils/trpc";
-
-function Discussion({ discussion }: { discussion: any }) {
-  return <div>
-    <Link href={`/discussions/${discussion.permalink}`}>{discussion.title}</Link>
-  </div>;
-}
+import dayjs from "~/lib/dayjs";
+import { formatNumber } from "~/utils/numbers";
 
 function DiscussionPage() {
-  const { data: discussions, isLoading: isDiscussionsLoading } =
-    trpc.discussion.getAll.useQuery();
+  const { data: discussions, isLoading } = trpc.discussion.getAll.useQuery();
 
-  if (isDiscussionsLoading) {
+  if (isLoading) {
     return (
       <div
         role="status"
@@ -37,12 +36,61 @@ function DiscussionPage() {
   if (!discussions) {
     return <div>No Discussions</div>;
   }
+
+  console.log(discussions);
+
   return (
     <div>
-      <ButtonLink href="/discussions/create">Create discussion</ButtonLink>
-      {discussions.map((discussion) => (
-        <Discussion key={discussion.id} discussion={discussion} />
-      ))}
+      <Head>
+        <title>Discussions - {SITE_NAME}</title>
+      </Head>
+      <div className="space-y-4">
+        <div className="flex justify-end">
+          <ButtonLink href="/discussions/create">Create discussion</ButtonLink>
+        </div>
+        <ul
+          role="list"
+          className="divide-y divide-gray-200 bg-white p-2 rounded-lg shadow "
+        >
+          {discussions.map((discussion) => (
+            <li
+              key={discussion.id}
+              className="relative bg-white py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-sky-600 rounded"
+            >
+              <div className="flex justify-between space-x-3">
+                <div className="min-w-0 flex-1">
+                  <Link
+                    href={`/discussions/${discussion.permalink}`}
+                    className="block focus:outline-none"
+                  >
+                    <a>
+                      <span className="absolute inset-0" aria-hidden="true" />
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        {discussion.title}
+                      </p>
+                      <p className="text-sm text-gray-500 truncate">
+                        {discussion.author.name}
+                      </p>
+                    </a>
+                  </Link>
+                </div>
+                <time
+                  dateTime={discussion.createdAt.toString()}
+                  className="flex-shrink-0 whitespace-nowrap text-sm text-gray-500"
+                >
+                  {dayjs(discussion.createdAt).fromNow()}
+                </time>
+              </div>
+              <div className="mt-1 text-xs text-gray-500 space-x-2">
+                <span className="flex items-center gap-1">
+                  {/* <Icon icon={eye20Regular} className="h-5 w-5" />{" "} */}
+                  {formatNumber(discussion.views)} views
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

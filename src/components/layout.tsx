@@ -1,5 +1,7 @@
 import React, { SVGProps } from "react";
 import Header from "./header";
+import Head from "next/head";
+import { SITE_NAME, SITE_TAGLINE } from "~/utils/constants";
 
 type DefaultLayoutProps = { children: React.ReactNode };
 
@@ -75,6 +77,13 @@ const navigation = [
 export default function Layout({ children }: DefaultLayoutProps) {
   return (
     <>
+      <Head>
+        <title>
+          {SITE_NAME} - {SITE_TAGLINE}
+        </title>
+        <meta name="description" content={SITE_TAGLINE} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div className="min-h-screen bg-gray-100">
         <Header />
         <main className="max-w-7xl mx-auto px-0 py-8 sm:px-6 lg:px-8">

@@ -49,6 +49,7 @@
     "react-hook-form": "^7.33.1",
     "react-hot-toast": "^2.2.0",
     "react-query": "^3.39.1",
+    "react-wrap-balancer": "^1.0.0",
     "rehype-katex": "^6.0.2",
     "remark-math": "^5.1.1",
     "superjson": "^1.9.1",
@@ -57,7 +58,7 @@
     "zod": "^3.17.3"
   },
   "devDependencies": {
-    "@iconify/icons-fluent": "^1.2.14",
+    "@iconify/icons-fluent": "^1.2.26",
     "@iconify/react": "^3.2.2",
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/typography": "^0.5.3",

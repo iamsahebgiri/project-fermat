@@ -1,5 +1,5 @@
-import { classNames } from '~/utils/classnames';
-import * as React from 'react';
+import { classNames } from "~/utils/classnames";
+import * as React from "react";
 
 export type TextareaOwnProps = {
   label?: string;
@@ -7,7 +7,14 @@ export type TextareaOwnProps = {
 };
 
 type TextareaProps = TextareaOwnProps &
-  React.ComponentPropsWithoutRef<'textarea'>;
+  React.ComponentPropsWithoutRef<"textarea">;
+
+  // TODO: Update height of the textarea based on the content height
+function updateTextAreaSize(textarea: HTMLTextAreaElement) {
+  if (textarea === null) return;
+  textarea.style.height = "0";
+  textarea.style.height = `${textarea.scrollHeight}px`;
+}
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ label, helperText, id, name, className, ...rest }, forwardedRef) => {
@@ -30,13 +37,13 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           id={id || name}
           name={name}
           className={classNames(
-            'shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md',
-            className,
+            "shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md",
+            className
           )}
         />
       </div>
     );
-  },
+  }
 );
 
-Textarea.displayName = 'Textarea';
+Textarea.displayName = "Textarea";

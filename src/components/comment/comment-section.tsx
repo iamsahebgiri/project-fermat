@@ -33,7 +33,7 @@ function CommentSection() {
   }
 
   return (
-    <div>
+    <div className="max-w-3xl space-y-8">
       <CommentForm />
       {comments && <ListComments comments={formComments(comments || [])} />}
     </div>

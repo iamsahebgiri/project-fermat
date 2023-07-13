@@ -74,11 +74,56 @@ export const commentRouter = router({
               },
             }),
           },
+          include: {
+            author: {
+              select: {
+                name: true,
+                id: true,
+                image: true,
+              },
+            },
+          },
         });
         return comment;
       } catch (e) {
         console.log(e);
 
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+        });
+      }
+    }),
+  edit: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        body: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { body, id } = input;
+
+      try {
+        const updatedComment = await ctx.prisma.comment.update({
+          where: {
+            id,
+          },
+          data: {
+            body,
+          },
+          include: {
+            author: {
+              select: {
+                name: true,
+                id: true,
+                image: true,
+              },
+            },
+          },
+        });
+        return updatedComment;
+      } catch (e) {
+        console.log(e);
         throw new TRPCError({
           code: "BAD_REQUEST",
         });

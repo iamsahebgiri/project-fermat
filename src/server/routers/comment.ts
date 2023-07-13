@@ -32,7 +32,15 @@ export const commentRouter = router({
           },
         });
 
-        return comments;
+        return comments.map((comment) => {
+          if (comment.deletedAt) {
+            return {
+              ...comment,
+              body: "[redacted]",
+            };
+          }
+          return comment;
+        });
       } catch (e) {
         console.log(e);
         throw new TRPCError({
@@ -122,6 +130,53 @@ export const commentRouter = router({
           },
         });
         return updatedComment;
+      } catch (e) {
+        console.log(e);
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+        });
+      }
+    }),
+  delete: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id } = input;
+
+      try {
+        const comment = await ctx.prisma.comment.findUniqueOrThrow({
+          where: {
+            id,
+          },
+        });
+
+        // See if it has any childrens
+        const childrens = await ctx.prisma.comment.count({
+          where: {
+            parentId: comment.id,
+          },
+        });
+
+        // if it has children then soft delete the comment
+        if (childrens > 0) {
+          await ctx.prisma.comment.update({
+            where: { id },
+            data: {
+              deletedAt: new Date(),
+            },
+          });
+          return "updated";
+        } else {
+          await ctx.prisma.comment.delete({
+            where: {
+              id,
+            },
+          });
+          return "deleted";
+        }
       } catch (e) {
         console.log(e);
         throw new TRPCError({

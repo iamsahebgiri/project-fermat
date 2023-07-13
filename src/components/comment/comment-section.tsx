@@ -1,17 +1,23 @@
 import { useRouter } from "next/router";
 import CommentForm from "./comment-form";
 import { trpc } from "~/utils/trpc";
-import ListComments from "./list-comments";
-import formComments from "~/utils/comments";
+import ListComments from "./comments-list";
+import formatComments from "~/utils/comments";
+import { useMemo } from "react";
 
 function CommentSection() {
   const router = useRouter();
 
   const permalink = router.query.permalink as string;
-  const { data: comments, isLoading: isCommentLoading } =
-    trpc.comment.getAll.useQuery({ permalink });
+  const { data: comments, isLoading } = trpc.comment.getAll.useQuery({
+    permalink,
+  });
 
-  if (isCommentLoading) {
+  const formattedComments = useMemo(() => {
+    return formatComments(comments || []);
+  }, [comments]);
+
+  if (isLoading) {
     return (
       <div
         role="status"
@@ -33,9 +39,14 @@ function CommentSection() {
   }
 
   return (
-    <div className="max-w-3xl space-y-8">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-semibold mb-4 ">Comments</h2>
       <CommentForm />
-      {comments && <ListComments comments={formComments(comments || [])} />}
+      {comments.length > 0 ? (
+        <ListComments comments={formattedComments} />
+      ) : (
+        "No comments"
+      )}
     </div>
   );
 }

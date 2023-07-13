@@ -90,6 +90,7 @@ model Comment {
     parent   Comment?  @relation("comment_children", fields: [parentId], references: [id])
     parentId String?
 
+    deletedAt DateTime? @db.Timestamp()
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }

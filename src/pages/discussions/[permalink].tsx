@@ -39,11 +39,13 @@ function SingleDiscussionPageContent({ permalink }: { permalink: string }) {
           {discussion?.title}
         </h2>
         Posted by {discussion?.author.name} on{" "}
-        {discussion?.createdAt.toLocaleDateString("en-AU", {
-          dateStyle: "medium",
+        {discussion?.createdAt.toLocaleDateString("en-US", {
+          dateStyle: "long",
         })}
       </div>
-      <Markdown>{discussion?.body}</Markdown>
+      <div className="prose prose-slate max-w-3xl">
+        <Markdown>{discussion?.body}</Markdown>
+      </div>
 
       <CommentSection />
     </div>

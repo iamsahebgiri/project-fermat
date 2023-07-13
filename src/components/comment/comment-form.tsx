@@ -9,12 +9,12 @@ function CommentForm({
   body,
   parentId,
   commentId,
-  onClose,
+  handleSuccess,
 }: {
   body?: string;
   commentId?: string;
   parentId?: string;
-  onClose?: () => void;
+  handleSuccess?: () => void;
 }) {
   const router = useRouter();
   const permalink = router.query.permalink as string;
@@ -36,9 +36,13 @@ function CommentForm({
     trpc.comment.create.useMutation({
       onSuccess: (newComment) => {
         reset();
+
+        if (handleSuccess) handleSuccess();
+
         utils.comment.getAll.setData({ permalink }, (oldData) => {
-          if (typeof oldData === "undefined") return;
-          const newCommentCache = [newComment, ...oldData];
+          if (typeof oldData === "undefined") return oldData;
+          const newCommentCache = [...oldData, newComment];
+          console.log(newComment);
           return newCommentCache;
         });
       },
@@ -52,7 +56,7 @@ function CommentForm({
       onSuccess: (updatedComment) => {
         reset();
 
-        if (onClose) onClose();
+        if (handleSuccess) handleSuccess();
 
         utils.comment.getAll.setData({ permalink }, (oldData) => {
           if (typeof oldData === "undefined") return;
@@ -90,7 +94,6 @@ function CommentForm({
         <Textarea
           required
           placeholder="What are your thoughts?"
-          label="Comment"
           rows={8}
           {...register("body")}
         />
@@ -98,8 +101,8 @@ function CommentForm({
         <input {...register("permalink")} type="hidden" value={permalink} />
 
         <div className="flex justify-end gap-2">
-          {onClose && (
-            <Button variant="secondary" onClick={onClose}>
+          {handleSuccess && (
+            <Button variant="secondary" onClick={handleSuccess}>
               Cancel
             </Button>
           )}

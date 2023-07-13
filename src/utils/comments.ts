@@ -1,12 +1,11 @@
 import { Comment, CommentWithChildren } from "~/utils/trpc";
 
-function formComments(comments: Array<Comment>) {
+function formatComments(comments: Array<Comment>) {
   const roots: Array<CommentWithChildren> = [];
   const commentMap: any = {};
 
   comments.forEach((comment) => {
     const { id, parentId } = comment;
-
     commentMap[id] = { ...comment, children: [] };
     if (parentId !== null) {
       if (!commentMap[parentId]) {
@@ -23,6 +22,4 @@ function formComments(comments: Array<Comment>) {
   return roots;
 }
 
-function formatComment() {}
-
-export default formComments;
+export default formatComments;

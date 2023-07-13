@@ -1,11 +1,58 @@
 import React, { useState } from "react";
-import { CommentWithChildren } from "~/utils/trpc";
+import { CommentWithChildren, trpc } from "~/utils/trpc";
 import { Button } from "~/components/button";
 import CommentForm from "./comment-form";
 import dayjs from "~/lib/dayjs";
 import { Avatar, AvatarImage, AvatarFallback } from "~/components/ui/avatar";
 import { generateAvatar } from "~/utils/strings";
 import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
+
+function DeleteComment({ commentId }: { commentId: string }) {
+  const router = useRouter();
+  const permalink = router.query.permalink as string;
+
+  const utils = trpc.useContext();
+  const { mutate, isLoading } = trpc.comment.delete.useMutation({
+    onSuccess: (type) => {
+      utils.comment.getAll.setData({ permalink }, (oldData) => {
+        if (typeof oldData === "undefined") return oldData;
+        if (type == "updated") {
+          const updatedComments = oldData?.map((comment) => {
+            if (comment.id == commentId) {
+              return {
+                ...comment,
+                deletedAt: new Date(),
+              };
+            }
+            return comment;
+          });
+
+          return updatedComments;
+        } else if (type === "deleted") {
+          const newCommentCache = oldData.filter(
+            (comment) => comment.id !== commentId
+          );
+          return newCommentCache;
+        }
+      });
+    },
+    onError(error) {
+      toast.error(error.message);
+    },
+  });
+
+  return (
+    <Button
+      variant="danger"
+      isLoading={isLoading}
+      onClick={() => mutate({ id: commentId })}
+    >
+      Delete
+    </Button>
+  );
+}
 
 function CommentActions({
   commentId,
@@ -21,17 +68,6 @@ function CommentActions({
   return (
     <>
       <div className="my-2 space-x-2">
-        {data?.user.id === comment.authorId && (
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setReplying(false);
-              setEditing(!editing);
-            }}
-          >
-            Edit
-          </Button>
-        )}
         <Button
           variant="secondary"
           onClick={() => {
@@ -41,14 +77,34 @@ function CommentActions({
         >
           Reply
         </Button>
+        {data?.user.id === comment.authorId && (
+          <>
+            {!comment.deletedAt && (
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setReplying(false);
+                  setEditing(!editing);
+                }}
+              >
+                Edit
+              </Button>
+            )}
+
+            <DeleteComment commentId={comment.id} />
+          </>
+        )}
       </div>
 
       {replying && (
-        <CommentForm onClose={() => setReplying(false)} parentId={commentId} />
+        <CommentForm
+          handleSuccess={() => setReplying(false)}
+          parentId={commentId}
+        />
       )}
       {editing && (
         <CommentForm
-          onClose={() => setEditing(false)}
+          handleSuccess={() => setEditing(false)}
           body={comment.body}
           commentId={comment.id}
         />
@@ -88,7 +144,11 @@ function Comment({ comment, hideDivider }: CommentProps) {
             </span>
           </div>
 
-          <p className="whitespace-pre-wrap">{comment.body}</p>
+          {comment.deletedAt ? (
+            <p className="text-slate-500 italic ">Comment deleted by user</p>
+          ) : (
+            <p className="whitespace-pre-wrap">{comment.body}</p>
+          )}
 
           <div className="mt-3">
             <CommentActions commentId={comment.id} comment={comment} />

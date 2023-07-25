@@ -1,30 +1,23 @@
-function formatNumber(num: bigint): string {
-  const billion = BigInt(1e9);
-  const million = BigInt(1e6);
-  const thousand = BigInt(1e3);
+export const formatNumber = (num: number, digits: number = 1): string => {
+  const lookup = [
+    { value: 1, symbol: "" },
+    { value: 1e3, symbol: "k" },
+    { value: 1e6, symbol: "M" },
+    { value: 1e9, symbol: "G" },
+    { value: 1e12, symbol: "T" },
+    { value: 1e15, symbol: "P" },
+    { value: 1e18, symbol: "E" },
+  ];
 
-  if (num >= billion) {
-    const billions = (num / billion).toString();
-    return billions.endsWith("000")
-      ? billions.slice(0, -3) + "B"
-      : billions + "B";
-  }
+  const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+  var item = lookup
+    .slice()
+    .reverse()
+    .find(function (item) {
+      return num >= item.value;
+    });
 
-  if (num >= million) {
-    const millions = (num / million).toString();
-    return millions.endsWith("000")
-      ? millions.slice(0, -3) + "M"
-      : millions + "M";
-  }
-
-  if (num >= thousand) {
-    const thousands = (num / thousand).toString();
-    return thousands.endsWith("000")
-      ? thousands.slice(0, -3) + "K"
-      : thousands + "K";
-  }
-
-  return num.toString();
-}
-
-export { formatNumber };
+  return item
+    ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol
+    : "0";
+};

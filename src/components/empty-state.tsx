@@ -6,7 +6,7 @@ type Props = {
   children?: React.ReactNode;
   title: string;
   subtitle?: string;
-  url?: string | undefined;
+  url?: string | any;
 };
 
 export default function EmptyState({ children, title, subtitle, url }: Props) {
@@ -18,8 +18,9 @@ export default function EmptyState({ children, title, subtitle, url }: Props) {
       <h2 className="text-xl font-bold text-slate-950 mt-2 text-center">
         <Balancer>{title}</Balancer>
       </h2>
-      <p className="text-slate-600 text-sm text-center max-w-md"><Balancer>{subtitle}</Balancer></p>
-        
+      <p className="text-slate-600 text-sm text-center max-w-md">
+        <Balancer>{subtitle}</Balancer>
+      </p>
     </div>
   );
 }

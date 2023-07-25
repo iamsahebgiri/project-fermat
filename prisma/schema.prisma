@@ -64,7 +64,7 @@ model Discussion {
     title     String
     body      String
     permalink String @unique
-    views     BigInt @default(0)
+    views     Int    @default(0)
 
     author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId String

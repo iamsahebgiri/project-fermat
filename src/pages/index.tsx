@@ -89,13 +89,6 @@ const Home: NextPageWithAuthAndLayout = () => {
 
   return (
     <>
-      <Head>
-        <title>
-          {SITE_NAME} - {SITE_TAGLINE}
-        </title>
-        <meta name="description" content={SITE_TAGLINE} />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <div className="rounded-md bg-white shadow">
         <Table>
           <TableHeader>

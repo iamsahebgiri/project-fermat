@@ -8,6 +8,7 @@ import { generateAvatar } from "~/utils/strings";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 function DeleteComment({ commentId }: { commentId: string }) {
   const router = useRouter();
@@ -124,21 +125,25 @@ function Comment({ comment, hideDivider }: CommentProps) {
       <li className="relative flex gap-6 pb-2 items-start gap-x-2">
         <span className="absolute left-[15px] inset-y-0 my-auto h-full w-[2px] bg-slate-200" />
         <div className="flex-none relative">
-          <Avatar className="h-8 w-8">
-            <AvatarImage
-              src={comment.author.image ?? ""}
-              alt={comment.author.name ?? "Anonymous"}
-            />
-            <AvatarFallback>
-              {generateAvatar(comment.author.name ?? "NA")}
-            </AvatarFallback>
-          </Avatar>
+          <Link href={`/profile/${comment.author.id}`}>
+            <Avatar className="h-8 w-8">
+              <AvatarImage
+                src={comment.author.image ?? ""}
+                alt={comment.author.name ?? "Anonymous"}
+              />
+              <AvatarFallback>
+                {generateAvatar(comment.author.name ?? "NA")}
+              </AvatarFallback>
+            </Avatar>
+          </Link>
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-x-3 pt-1">
-            <span className="block text-base font-semibold">
-              {comment.author.name}
-            </span>
+            <Link href={`/profile/${comment.author.id}`}>
+              <a className="block text-base font-semibold">
+                {comment.author.name}
+              </a>
+            </Link>
             <span className="text-sm text-slate-500">
               {dayjs(comment.createdAt).fromNow()}
             </span>

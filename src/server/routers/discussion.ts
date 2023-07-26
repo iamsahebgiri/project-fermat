@@ -53,6 +53,7 @@ export const discussionRouter = router({
           permalink: true,
           author: {
             select: {
+              id: true,
               name: true,
             },
           },

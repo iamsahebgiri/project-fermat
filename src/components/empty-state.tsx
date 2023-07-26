@@ -6,7 +6,7 @@ type Props = {
   children?: React.ReactNode;
   title: string;
   subtitle?: string;
-  url?: string | undefined;
+  url?: string | any;
 };
 
 export default function EmptyState({ children, title, subtitle, url }: Props) {

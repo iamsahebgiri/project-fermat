@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import CommentSection from "~/components/comment/comment-section";
@@ -38,7 +39,11 @@ function SingleDiscussionPageContent({ permalink }: { permalink: string }) {
         <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-200">
           {discussion?.title}
         </h2>
-        Posted by {discussion?.author.name} on{" "}
+        Posted by{" "}
+        <Link href={`/profile/${discussion.author.id}`}>
+          <a>{discussion?.author.name}</a>
+        </Link>{" "}
+        on{" "}
         {discussion?.createdAt.toLocaleDateString("en-US", {
           dateStyle: "long",
         })}

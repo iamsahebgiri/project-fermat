@@ -1,5 +1,10 @@
 import { signIn } from "next-auth/react";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { Button } from "~/components/button";
+import { SITE_NAME } from "~/utils/constants";
 
 export default function SignIn() {
   const { query } = useRouter();
@@ -7,35 +12,97 @@ export default function SignIn() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md space-y-8">
-          <div>
-            <button
-              type="button"
-              className="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 mr-2 mb-2"
+      <Head>
+        <title>{`Create an account - ${SITE_NAME}`}</title>
+      </Head>
+      <div className="flex min-h-screen">
+        <div className="hidden md:block flex-1">
+          <div className="relative h-full w-full">
+            <div className="absolute inset-0 bg-zinc-900" />
+            <video
+              className="h-full w-full object-cover absolute"
+              src="https://cdn.dribbble.com/uploads/48226/original/b8bd4e4273cceae2889d9d259b04f732.mp4?1689028949"
+              loop
+              autoPlay
+              muted
+              controls={false}
+              playsInline
+            />
+            <div className="absolute z-10 p-10 ">
+              <div className="text-white font-semibold text-lg flex items-center gap-2">
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 40 40"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M25.0925 1.05386L21.1595 0L17.8451 12.3696L14.8528 1.20224L10.9197 2.2561L14.1527 14.3216L6.10008 6.26898L3.22089 9.14817L12.0536 17.981L1.05386 15.0336L0 18.9666L12.0186 22.187C11.881 21.5935 11.8082 20.9751 11.8082 20.3397C11.8082 15.8421 15.4542 12.1961 19.9518 12.1961C24.4494 12.1961 28.0954 15.8421 28.0954 20.3397C28.0954 20.971 28.0235 21.5856 27.8876 22.1756L38.8103 25.1023L39.8641 21.1693L27.7977 17.9361L38.7982 14.9885L37.7443 11.0555L25.6784 14.2885L33.731 6.23592L30.8518 3.35673L22.1416 12.067L25.0925 1.05386Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M27.8769 22.2214C27.5397 23.647 26.8278 24.9277 25.851 25.9538L33.764 33.8669L36.6432 30.9877L27.8769 22.2214Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M25.771 26.0366C24.7824 27.0463 23.5331 27.7998 22.1321 28.1881L25.0115 38.9341L28.9445 37.8802L25.771 26.0366Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M21.9852 28.2274C21.3352 28.3945 20.6539 28.4833 19.9518 28.4833C19.1996 28.4833 18.4712 28.3813 17.7797 28.1904L14.8977 38.9462L18.8307 40L21.9852 28.2274Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M17.6407 28.1507C16.2611 27.7431 15.034 26.98 14.0656 25.9674L6.13313 33.8999L9.01232 36.7791L17.6407 28.1507Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M13.9994 25.8973C13.0476 24.8783 12.3543 23.6147 12.0243 22.2111L1.06596 25.1474L2.11981 29.0804L13.9994 25.8973Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                {SITE_NAME}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 flex">
+          <div className="mx-auto flex w-full flex-col justify-center space-y-6 px-4 sm:px-0 sm:w-[350px]">
+            <div className="flex flex-col space-y-2 text-center">
+              <h1 className="text-2xl font-semibold tracking-tight">
+                Create an account
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                We will create an account if doesn&apos;t exists.
+              </p>
+            </div>
+            <Button
               onClick={() =>
                 signIn("github", {
                   callbackUrl: callbackUrl as string,
                 })
               }
             >
-              <svg
-                className="w-4 h-4 mr-2 -ml-1"
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fab"
-                data-icon="github"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 496 512"
-              >
-                <path
-                  fill="currentColor"
-                  d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"
-                ></path>
-              </svg>
               Sign in with Github
-            </button>
+            </Button>
+            <p className="px-8 text-center text-sm text-muted-foreground">
+              By clicking continue, you agree to our{" "}
+              <Link
+                href="/terms"
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/privacy"
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </p>
           </div>
         </div>
       </div>

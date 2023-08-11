@@ -1,12 +1,38 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import { toast } from "react-hot-toast";
 import CommentSection from "~/components/comment/comment-section";
 import Layout from "~/components/layout";
 import Markdown from "~/components/markdown";
+import { Button } from "~/components/button";
 import { trpc } from "~/utils/trpc";
+import { useSession } from "next-auth/react";
+
+function DeleteDiscussion({ discussionId }: { discussionId: string }) {
+  const router = useRouter();
+  const { mutate, isLoading } = trpc.discussion.delete.useMutation({
+    onSuccess: () => {
+      router.replace("/discussions");
+    },
+    onError(error) {
+      toast.error(error.message);
+    },
+  });
+
+  return (
+    <Button
+      variant="danger"
+      isLoading={isLoading}
+      onClick={() => mutate({ id: discussionId })}
+    >
+      Delete
+    </Button>
+  );
+}
 
 function SingleDiscussionPageContent({ permalink }: { permalink: string }) {
+  const { data: session } = useSession();
   const { data: discussion, isLoading: isDiscussionLoading } =
     trpc.discussion.getByPermalink.useQuery({ permalink });
 
@@ -51,6 +77,9 @@ function SingleDiscussionPageContent({ permalink }: { permalink: string }) {
       <div className="prose prose-slate max-w-3xl">
         <Markdown>{discussion?.body}</Markdown>
       </div>
+      {session?.user.id === discussion.author.id && (
+        <DeleteDiscussion discussionId={discussion.id} />
+      )}
 
       <CommentSection />
     </div>

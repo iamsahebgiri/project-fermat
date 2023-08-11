@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "../trpc/trpc";
 import crypto from "crypto";
+import { TRPCError } from "@trpc/server";
 
 const getPermaLink = (title: string) =>
   title
@@ -89,5 +90,27 @@ export const discussionRouter = router({
           },
         },
       });
+    }),
+  delete: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id } = input;
+
+      try {
+        await ctx.prisma.discussion.delete({
+          where: {
+            id,
+          },
+        });
+      } catch (e) {
+        console.log(e);
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+        });
+      }
     }),
 });

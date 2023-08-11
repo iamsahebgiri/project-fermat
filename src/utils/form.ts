@@ -3,17 +3,17 @@ import * as React from "react";
 import { useBeforeunload } from "react-beforeunload";
 import { FormState } from "react-hook-form";
 
-type Props<T> = {
-  formState: FormState<T>;
+type Props = {
+  formState: any;
   message?: string;
 };
 
 const defaultMessage = "Are you sure to leave without saving?";
 
-export function useLeaveConfirm<T>({
+export function useLeaveConfirm({
   formState,
   message = defaultMessage,
-}: Props<T>) {
+}: Props) {
   const Router = useRouter();
 
   const { isDirty } = formState;

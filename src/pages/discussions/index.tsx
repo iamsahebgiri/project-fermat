@@ -65,7 +65,7 @@ function DiscussionPage() {
             />
           </div>
         ) : (
-          <ul role="list" className="divide-y divide-gray-200 ">
+          <ul role="list" className="divide-y divide-gray-200 bg-white p-2 rounded-lg shadow">
             {discussions.map((discussion) => (
               <li
                 key={discussion.id}

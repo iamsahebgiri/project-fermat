@@ -30,6 +30,7 @@ export const userRouter = router({
         image: true,
         points: true,
       },
+      take: 20,
       orderBy: {
         points: "desc",
       },

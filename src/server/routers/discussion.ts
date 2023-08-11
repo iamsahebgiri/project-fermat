@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { privateProcedure, publicProcedure, router } from "../trpc/trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc/trpc";
 import crypto from "crypto";
 
 const getPermaLink = (title: string) =>
@@ -61,7 +61,7 @@ export const discussionRouter = router({
         },
       });
     }),
-  create: privateProcedure
+  create: protectedProcedure
     .input(
       z.object({
         title: z.string(),

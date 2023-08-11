@@ -80,7 +80,7 @@ export const problemRouter = router({
           difficulty: true,
         },
         orderBy: {
-          id: "asc",
+          difficulty: "asc",
         },
       });
 

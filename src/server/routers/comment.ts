@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { privateProcedure, publicProcedure, router } from "../trpc/trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc/trpc";
 import { TRPCError } from "@trpc/server";
 
 export const commentRouter = router({
@@ -48,7 +48,7 @@ export const commentRouter = router({
         });
       }
     }),
-  create: privateProcedure
+  create: protectedProcedure
     .input(
       z.object({
         permalink: z.string(),
@@ -101,7 +101,7 @@ export const commentRouter = router({
         });
       }
     }),
-  edit: privateProcedure
+  edit: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -137,7 +137,7 @@ export const commentRouter = router({
         });
       }
     }),
-  delete: privateProcedure
+  delete: protectedProcedure
     .input(
       z.object({
         id: z.string(),

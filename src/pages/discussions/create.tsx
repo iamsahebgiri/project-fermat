@@ -17,7 +17,7 @@ function CreateDiscussionPage() {
   return (
     <div>
       <Head>
-        <title>Create a Discussion - {SITE_NAME}</title>
+        <title>{`Create a Discussion - ${SITE_NAME}`}</title>
       </Head>
 
       <div className="col-span-8">

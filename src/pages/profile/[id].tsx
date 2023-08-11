@@ -63,9 +63,7 @@ const ProfilePageContent: React.FC<{ id: string }> = ({ id }) => {
   return (
     <div>
       <Head>
-        <title>
-          {user.name} - {SITE_NAME}
-        </title>
+        <title>{`${user.name} - ${SITE_NAME}`}</title>
       </Head>
       <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-4 px-4 lg:p-0 gap-y-2.5">
         <div className="bg-white pb-6 rounded-lg shadow-sm">

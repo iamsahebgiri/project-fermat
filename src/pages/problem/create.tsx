@@ -24,7 +24,7 @@ export default function CreateProblemPage() {
   return (
     <div>
       <Head>
-        <title>Create a problem - {SITE_NAME}</title>
+        <title>{`Create a problem - ${SITE_NAME}`}</title>
       </Head>
 
       <div className="col-span-8">

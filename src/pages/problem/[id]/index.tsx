@@ -86,7 +86,7 @@ const ProblemPageContent: React.FC<{ id: string }> = ({ id }) => {
     <>
       <Head>
         <title>
-          {problem.title} - {SITE_NAME}
+          {`${problem.title} - ${SITE_NAME}`}
         </title>
       </Head>
 

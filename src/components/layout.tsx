@@ -78,9 +78,7 @@ export default function Layout({ children }: DefaultLayoutProps) {
   return (
     <>
       <Head>
-        <title>
-          {SITE_NAME} - {SITE_TAGLINE}
-        </title>
+        <title>{`${SITE_NAME} - ${SITE_TAGLINE}`}</title>
         <meta name="description" content={SITE_TAGLINE} />
         <link rel="icon" href="/favicon.ico" />
       </Head>

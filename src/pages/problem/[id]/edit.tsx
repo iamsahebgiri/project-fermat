@@ -21,7 +21,7 @@ const EditProblem: React.FC<{ id: string }> = ({ id }) => {
     return (
       <>
         <Head>
-          <title>Edit {problemQuery.data.title} - {SITE_NAME}</title>
+          <title>{`Edit ${problemQuery.data.title} - ${SITE_NAME}`}</title>
         </Head>
 
         <h1 className="text-2xl font-semibold tracking-tight md:text-3xl px-4 sm:px-0">

@@ -42,7 +42,7 @@ function DiscussionPage() {
   return (
     <div>
       <Head>
-        <title>Discussions - {SITE_NAME}</title>
+        <title>{`Discussions - ${SITE_NAME}`}</title>
       </Head>
       <div className="space-y-4">
         <div className="space-y-2">
